@@ -66,19 +66,23 @@ const goProfile = () => router.push('/profile')
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
-  background: #f6f4ef;
+  background: var(--bg);
 }
 
 .admin-sidebar {
-  background: #151310;
-  color: #f5f1ea;
+  background: #0b1220;
+  color: #e2e8f0;
   padding: 20px 0;
+  border-right: 1px solid rgba(15, 23, 42, 0.6);
 }
 
 .sidebar-brand {
   padding: 0 20px 18px;
   font-weight: 700;
   letter-spacing: 0.4px;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.8);
 }
 
 .menu {
@@ -87,12 +91,20 @@ const goProfile = () => router.push('/profile')
 }
 
 .menu :deep(.el-menu-item) {
-  color: #e2ddd3;
+  color: rgba(226, 232, 240, 0.8);
+  border-radius: 10px;
+  margin: 4px 12px;
+}
+
+.menu :deep(.el-menu-item:hover) {
+  background: rgba(30, 94, 255, 0.16);
+  color: #fff;
 }
 
 .menu :deep(.el-menu-item.is-active) {
-  background: rgba(214, 106, 45, 0.2);
+  background: rgba(30, 94, 255, 0.24);
   color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(30, 94, 255, 0.4);
 }
 
 .admin-main {
@@ -105,13 +117,15 @@ const goProfile = () => router.push('/profile')
   justify-content: space-between;
   align-items: center;
   padding: 18px 28px;
-  border-bottom: 1px solid rgba(30, 27, 22, 0.1);
-  background: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
 }
 
 .topbar-title {
   font-size: 20px;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .topbar-actions {
@@ -126,12 +140,12 @@ const goProfile = () => router.push('/profile')
   padding: 6px 10px;
   border-radius: 999px;
   background: #fff;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   cursor: pointer;
 }
 
 .admin-content {
-  padding: 24px 28px 40px;
+  padding: 28px 32px 50px;
 }
 
 @media (max-width: 980px) {

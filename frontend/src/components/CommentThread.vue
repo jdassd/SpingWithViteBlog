@@ -59,7 +59,7 @@ const canDelete = computed(() => {
 <style scoped>
 .comment-item {
   padding: 12px 0;
-  border-bottom: 1px dashed rgba(30, 27, 22, 0.1);
+  border-bottom: 1px dashed rgba(15, 23, 42, 0.12);
 }
 
 .comment-head {
@@ -76,7 +76,8 @@ const canDelete = computed(() => {
 .status-pill {
   padding: 2px 6px;
   border-radius: 8px;
-  background: rgba(214, 106, 45, 0.2);
+  background: rgba(30, 94, 255, 0.14);
+  color: var(--brand-strong);
   font-size: 11px;
 }
 
@@ -87,7 +88,7 @@ const canDelete = computed(() => {
 
 .comment-replies {
   margin-left: 20px;
-  border-left: 2px solid rgba(30, 27, 22, 0.08);
+  border-left: 2px solid rgba(15, 23, 42, 0.08);
   padding-left: 16px;
 }
 </style>

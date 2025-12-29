@@ -24,20 +24,20 @@ const html = computed(() => props.renderedContent || props.contentHtml || props.
 .content-body :deep(h1),
 .content-body :deep(h2),
 .content-body :deep(h3) {
-  font-family: "Source Serif 4", "Times New Roman", serif;
+  font-family: var(--font-display);
   margin: 20px 0 12px;
 }
 
 .content-body :deep(pre) {
-  background: #151310;
-  color: #f5f1ea;
+  background: #0b1220;
+  color: #e2e8f0;
   padding: 16px;
   border-radius: 12px;
   overflow: auto;
 }
 
 .content-body :deep(code) {
-  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-family: var(--font-mono);
   font-size: 14px;
 }
 

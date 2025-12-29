@@ -25,9 +25,9 @@ const formatDate = (value?: string) => (value ? dayjs(value).format('YYYY-MM-DD'
 
 <style scoped>
 .article-card {
-  padding: 18px;
+  padding: 20px;
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .article-meta {
@@ -38,13 +38,16 @@ const formatDate = (value?: string) => (value ? dayjs(value).format('YYYY-MM-DD'
 }
 
 .article-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .article-summary {
   color: var(--ink-muted);
   line-height: 1.6;
+  font-size: 14px;
 }
 
 .article-tags {
@@ -57,7 +60,7 @@ const formatDate = (value?: string) => (value ? dayjs(value).format('YYYY-MM-DD'
   padding: 4px 8px;
   border-radius: 999px;
   font-size: 12px;
-  background: rgba(47, 111, 106, 0.12);
+  background: rgba(15, 118, 110, 0.12);
   color: var(--accent);
 }
 </style>

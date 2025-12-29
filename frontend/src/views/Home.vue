@@ -165,26 +165,55 @@ onMounted(async () => {
 <style scoped>
 .home-blog {
   display: grid;
-  gap: 24px;
+  gap: 28px;
 }
 
 .blog-hero {
-  padding: 28px;
+  padding: 32px;
   display: grid;
   gap: 18px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: end;
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    400px circle at 12% 0%,
+    rgba(30, 94, 255, 0.12),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.blog-hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-title {
-  font-size: 40px;
+  font-size: 46px;
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  max-width: 520px;
+  line-height: 1.6;
 }
 
 .hero-actions {
   max-width: 420px;
+  justify-self: end;
 }
 
 .article-grid {
   display: grid;
   gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .pager {
@@ -194,17 +223,18 @@ onMounted(async () => {
 
 .home-portal {
   display: grid;
-  gap: 24px;
+  gap: 28px;
 }
 
 .portal-hero {
-  padding: 28px;
+  padding: 32px;
   display: grid;
   gap: 14px;
 }
 
 .portal-title {
-  font-size: 32px;
+  font-size: 34px;
+  letter-spacing: -0.02em;
 }
 
 .portal-search {
@@ -232,21 +262,25 @@ onMounted(async () => {
 
 .portal-link {
   display: flex;
+  align-items: center;
   gap: 12px;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface-muted);
-  transition: transform 0.2s ease;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .portal-link:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: rgba(15, 23, 42, 0.16);
 }
 
 .portal-link img {
   width: 32px;
   height: 32px;
+  border-radius: 8px;
 }
 
 .link-title {
@@ -263,5 +297,15 @@ onMounted(async () => {
 
 .theme-fallback {
   padding: 20px;
+}
+
+@media (max-width: 900px) {
+  .blog-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    justify-self: stretch;
+  }
 }
 </style>

@@ -1,19 +1,19 @@
 <template>
   <section class="container auth-container">
     <div class="auth-card card-surface">
-      <div class="section-title">Welcome back</div>
+      <div class="section-title">{{ $t('login.title') }}</div>
       <el-form :model="form" label-position="top">
-        <el-form-item label="Username">
+        <el-form-item :label="$t('login.username')">
           <el-input v-model="form.username" autocomplete="username" />
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item :label="$t('login.password')">
           <el-input v-model="form.password" type="password" autocomplete="current-password" />
         </el-form-item>
-        <el-button type="primary" class="full" @click="handleLogin">Login</el-button>
+        <el-button type="primary" class="full" @click="handleLogin">{{ $t('login.loginButton') }}</el-button>
       </el-form>
       <p class="muted">
-        No account?
-        <RouterLink to="/register">Create one</RouterLink>
+        {{ $t('login.noAccount') }}
+        <RouterLink to="/register">{{ $t('login.createOne') }}</RouterLink>
       </p>
     </div>
   </section>
@@ -24,7 +24,9 @@ import { reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
@@ -37,11 +39,11 @@ const form = reactive({
 const handleLogin = async () => {
   try {
     await auth.login(form)
-    ElMessage.success('Logged in')
+    ElMessage.success(t('login.success'))
     const redirect = (route.query.redirect as string) || '/'
     router.push(redirect)
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Login failed')
+    ElMessage.error(err?.message || t('login.failed'))
   }
 }
 </script>

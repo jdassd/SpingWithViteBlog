@@ -2,18 +2,18 @@
   <section class="container">
     <div class="search-hero card-surface">
       <div>
-        <span class="subtle-tag">Search</span>
-        <h1 class="serif">Find an article</h1>
+        <span class="subtle-tag">{{ $t('search.title') }}</span>
+        <h1 class="serif">{{ $t('search.title') }}</h1>
       </div>
       <div class="search-box">
-        <el-input v-model="keyword" placeholder="Search articles" @keyup.enter="runSearch" />
-        <el-button type="primary" @click="runSearch">Search</el-button>
+        <el-input v-model="keyword" :placeholder="$t('search.placeholder')" @keyup.enter="runSearch" />
+        <el-button type="primary" @click="runSearch">{{ $t('common.search') }}</el-button>
       </div>
     </div>
     <div v-if="results.length" class="results">
       <ArticleCard v-for="article in results" :key="article.id" :article="article" />
     </div>
-    <el-empty v-else description="No articles matched" />
+    <el-empty v-else :description="$t('search.noResults')" />
   </section>
 </template>
 

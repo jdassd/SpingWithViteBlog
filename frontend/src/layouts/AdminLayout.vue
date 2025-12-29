@@ -2,32 +2,42 @@
   <div class="admin-shell">
     <aside class="admin-sidebar">
       <div class="sidebar-brand">
-        <span class="brand-text">Admin Console</span>
+        <span class="brand-text">{{ $t('nav.admin') }}</span>
       </div>
       <el-menu :default-active="activePath" class="menu" router>
-        <el-menu-item index="/admin/dashboard">Dashboard</el-menu-item>
-        <el-menu-item index="/admin/articles">Articles</el-menu-item>
-        <el-menu-item index="/admin/comments">Comments</el-menu-item>
-        <el-menu-item index="/admin/pages">Pages</el-menu-item>
-        <el-menu-item index="/admin/navigation">Navigation</el-menu-item>
-        <el-menu-item index="/admin/albums">Albums</el-menu-item>
-        <el-menu-item index="/admin/themes">Themes</el-menu-item>
-        <el-menu-item index="/admin/settings">Settings</el-menu-item>
-        <el-menu-item index="/admin/users">Users</el-menu-item>
-        <el-menu-item index="/admin/audit-logs">Audit Logs</el-menu-item>
+        <el-menu-item index="/admin/dashboard">{{ $t('admin.dashboard') }}</el-menu-item>
+        <el-menu-item index="/admin/articles">{{ $t('admin.articles') }}</el-menu-item>
+        <el-menu-item index="/admin/comments">{{ $t('admin.comments') }}</el-menu-item>
+        <el-menu-item index="/admin/pages">{{ $t('admin.pages') }}</el-menu-item>
+        <el-menu-item index="/admin/navigation">{{ $t('admin.navigation') }}</el-menu-item>
+        <el-menu-item index="/admin/albums">{{ $t('admin.albums') }}</el-menu-item>
+        <el-menu-item index="/admin/themes">{{ $t('admin.themes') }}</el-menu-item>
+        <el-menu-item index="/admin/settings">{{ $t('admin.settings') }}</el-menu-item>
+        <el-menu-item index="/admin/users">{{ $t('admin.users') }}</el-menu-item>
+        <el-menu-item index="/admin/audit-logs">{{ $t('admin.auditLogs') }}</el-menu-item>
       </el-menu>
     </aside>
     <section class="admin-main">
       <header class="admin-topbar">
         <div class="topbar-title">{{ pageTitle }}</div>
         <div class="topbar-actions">
-          <el-button size="small" @click="goHome">View Site</el-button>
+          <el-dropdown @command="handleLanguageChange" class="lang-switcher">
+            <span class="lang-chip">🌐 {{ currentLanguageLabel }}</span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="lang in languageOptions" :key="lang.value" :command="lang.value">
+                  {{ lang.label }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <el-button size="small" @click="goHome">{{ $t('nav.home') }}</el-button>
           <el-dropdown>
             <span class="user-chip">{{ auth.user?.username }}</span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="goProfile">Profile</el-dropdown-item>
-                <el-dropdown-item divided @click="handleLogout">Logout</el-dropdown-item>
+                <el-dropdown-item @click="goProfile">{{ $t('nav.profile') }}</el-dropdown-item>
+                <el-dropdown-item divided @click="handleLogout">{{ $t('nav.logout') }}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -44,6 +54,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { setLocale, getLocale, languageOptions } from '@/i18n'
 
 const route = useRoute()
 const router = useRouter()
@@ -51,6 +62,16 @@ const auth = useAuthStore()
 
 const activePath = computed(() => route.path)
 const pageTitle = computed(() => (route.meta?.title as string) || 'Admin')
+
+// Language switcher
+const currentLanguageLabel = computed(() => {
+  const current = getLocale()
+  return languageOptions.find((l) => l.value === current)?.label || '简体中文'
+})
+
+const handleLanguageChange = (locale: string) => {
+  setLocale(locale)
+}
 
 const handleLogout = async () => {
   await auth.logout()
@@ -142,6 +163,18 @@ const goProfile = () => router.push('/profile')
   background: #fff;
   border: 1px solid rgba(15, 23, 42, 0.12);
   cursor: pointer;
+}
+
+.lang-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  font-size: 13px;
 }
 
 .admin-content {

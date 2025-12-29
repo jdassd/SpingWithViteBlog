@@ -1,27 +1,33 @@
 <template>
   <section class="admin-section">
     <el-tabs v-model="activeTab">
-      <el-tab-pane label="Site" name="site">
+      <el-tab-pane :label="$t('settings.site')" name="site">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="Site name">
+            <el-form-item :label="$t('settings.siteName')">
               <el-input v-model="settings.site_name" />
             </el-form-item>
-            <el-form-item label="Description">
+            <el-form-item :label="$t('settings.siteDescription')">
               <el-input v-model="settings.site_description" type="textarea" :rows="3" />
             </el-form-item>
-            <el-form-item label="Site URL">
+            <el-form-item :label="$t('settings.siteUrl')">
               <el-input v-model="settings.site_url" placeholder="http://localhost:8080" />
             </el-form-item>
-            <el-form-item label="Home Mode">
+            <el-form-item :label="$t('settings.homeMode')">
               <el-select v-model="settings.home_mode">
-                <el-option label="Blog" value="BLOG" />
-                <el-option label="Navigation Portal" value="NAV" />
-                <el-option label="Theme Home" value="THEME" />
+                <el-option :label="$t('settings.homeModeOptions.blog')" value="BLOG" />
+                <el-option :label="$t('settings.homeModeOptions.nav')" value="NAV" />
+                <el-option :label="$t('settings.homeModeOptions.theme')" value="THEME" />
               </el-select>
             </el-form-item>
-            <el-button type="primary" @click="saveSection(['site_name','site_description','site_url','home_mode'])">
-              Save Site
+            <el-form-item :label="$t('settings.defaultLanguage')">
+              <el-select v-model="settings.default_language">
+                <el-option label="简体中文" value="zh-CN" />
+                <el-option label="English" value="en" />
+              </el-select>
+            </el-form-item>
+            <el-button type="primary" @click="saveSection(['site_name','site_description','site_url','home_mode','default_language'])">
+              {{ $t('settings.saveSite') }}
             </el-button>
           </el-form>
         </div>
@@ -259,6 +265,7 @@ const loadSettings = async () => {
     'site_description',
     'site_url',
     'home_mode',
+    'default_language',
     'site_logo',
     'site_favicon',
     'rss_public_enabled',

@@ -2,9 +2,9 @@
   <section class="container">
     <div class="album-hero card-surface">
       <div>
-        <span class="subtle-tag">Albums</span>
-        <h1 class="serif">Photo collections</h1>
-        <p class="muted">Curated visual stories and archives.</p>
+        <span class="subtle-tag">{{ $t('album.title') }}</span>
+        <h1 class="serif">{{ $t('album.explore') }}</h1>
+        <p class="muted">{{ $t('album.browseCollections') }}</p>
       </div>
     </div>
     <div class="album-grid">
@@ -17,7 +17,7 @@
         <div class="cover" :style="{ backgroundImage: `url(${album.coverUrl || fallbackCover})` }"></div>
         <div class="album-info">
           <div class="album-title">{{ album.title }}</div>
-          <div class="muted">{{ album.description || 'Untitled collection' }}</div>
+          <div class="muted">{{ album.description || $t('album.noAlbums') }}</div>
         </div>
       </RouterLink>
     </div>

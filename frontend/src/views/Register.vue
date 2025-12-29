@@ -1,22 +1,22 @@
 <template>
   <section class="container auth-container">
     <div class="auth-card card-surface">
-      <div class="section-title">Create account</div>
+      <div class="section-title">{{ $t('register.title') }}</div>
       <el-form :model="form" label-position="top">
-        <el-form-item label="Username">
+        <el-form-item :label="$t('register.username')">
           <el-input v-model="form.username" autocomplete="username" />
         </el-form-item>
-        <el-form-item label="Email (optional)">
+        <el-form-item :label="$t('register.email')">
           <el-input v-model="form.email" autocomplete="email" />
         </el-form-item>
-        <el-form-item label="Password">
+        <el-form-item :label="$t('register.password')">
           <el-input v-model="form.password" type="password" autocomplete="new-password" />
         </el-form-item>
-        <el-button type="primary" class="full" @click="handleRegister">Register</el-button>
+        <el-button type="primary" class="full" @click="handleRegister">{{ $t('register.registerButton') }}</el-button>
       </el-form>
       <p class="muted">
-        Already have an account?
-        <RouterLink to="/login">Login</RouterLink>
+        {{ $t('register.hasAccount') }}
+        <RouterLink to="/login">{{ $t('register.loginNow') }}</RouterLink>
       </p>
     </div>
   </section>
@@ -27,7 +27,9 @@ import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const auth = useAuthStore()
 const router = useRouter()
 
@@ -40,10 +42,10 @@ const form = reactive({
 const handleRegister = async () => {
   try {
     await auth.register(form)
-    ElMessage.success('Account created')
+    ElMessage.success(t('register.success'))
     router.push('/')
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Registration failed')
+    ElMessage.error(err?.message || t('register.failed'))
   }
 }
 </script>

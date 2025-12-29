@@ -3,25 +3,25 @@
     <div class="card-surface editor-card">
       <div class="editor-head">
         <div>
-          <span class="subtle-tag">My Article</span>
-          <h1 class="serif">{{ isEdit ? 'Edit Article' : 'New Article' }}</h1>
+          <span class="subtle-tag">{{ $t('myArticle.title') }}</span>
+          <h1 class="serif">{{ isEdit ? $t('myArticle.editArticle') : $t('myArticle.newArticle') }}</h1>
         </div>
         <div class="editor-actions">
-          <el-button @click="goBack">Cancel</el-button>
-          <el-button type="primary" @click="saveArticle">{{ isEdit ? 'Update' : 'Publish' }}</el-button>
+          <el-button @click="goBack">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="saveArticle">{{ isEdit ? $t('myArticle.update') : $t('myArticle.publish') }}</el-button>
         </div>
       </div>
       <el-form :model="form" label-position="top">
-        <el-form-item label="Title">
-          <el-input v-model="form.title" placeholder="Enter title" />
+        <el-form-item :label="$t('common.title')">
+          <el-input v-model="form.title" :placeholder="$t('common.title')" />
         </el-form-item>
-        <el-form-item label="Content Type">
+        <el-form-item :label="$t('myArticle.contentType')">
           <el-radio-group v-model="form.contentType">
-            <el-radio-button label="MARKDOWN">Markdown</el-radio-button>
-            <el-radio-button label="RICH_TEXT">Rich Text</el-radio-button>
+            <el-radio-button label="MARKDOWN">{{ $t('myArticle.markdown') }}</el-radio-button>
+            <el-radio-button label="RICH_TEXT">{{ $t('myArticle.richText') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Content">
+        <el-form-item :label="$t('common.content')">
           <div v-if="form.contentType === 'MARKDOWN'" class="editor-split">
             <el-input v-model="form.contentRaw" type="textarea" :rows="12" />
             <div class="preview" v-html="renderedMarkdown"></div>
@@ -31,38 +31,41 @@
           </div>
         </el-form-item>
         <div class="form-grid">
-          <el-form-item label="Visibility">
-            <el-select v-model="form.visibility" placeholder="Select visibility">
-              <el-option v-for="option in visibilityOptions" :key="option" :label="option" :value="option" />
+          <el-form-item :label="$t('myArticle.visibility')">
+            <el-select v-model="form.visibility" :placeholder="$t('myArticle.visibility')">
+              <el-option :label="$t('myArticle.visibilityOptions.public')" value="PUBLIC" />
+              <el-option :label="$t('myArticle.visibilityOptions.loginOnly')" value="LOGIN_ONLY" />
+              <el-option :label="$t('myArticle.visibilityOptions.whitelist')" value="WHITELIST" />
+              <el-option :label="$t('myArticle.visibilityOptions.private')" value="PRIVATE" />
             </el-select>
           </el-form-item>
-          <el-form-item label="Status">
+          <el-form-item :label="$t('common.status')">
             <el-select v-model="form.status">
-              <el-option label="Draft" value="DRAFT" />
-              <el-option label="Published" value="PUBLISHED" />
+              <el-option :label="$t('myArticle.statusOptions.draft')" value="DRAFT" />
+              <el-option :label="$t('myArticle.statusOptions.published')" value="PUBLISHED" />
             </el-select>
           </el-form-item>
-          <el-form-item label="RSS Enabled">
+          <el-form-item :label="$t('myArticle.rssEnabled')">
             <el-switch v-model="form.rssEnabled" />
           </el-form-item>
-          <el-form-item label="Allow Index">
+          <el-form-item :label="$t('myArticle.allowIndex')">
             <el-switch v-model="form.allowIndex" />
           </el-form-item>
         </div>
-        <el-form-item label="Categories">
+        <el-form-item :label="$t('myArticle.categories')">
           <el-select v-model="form.categories" multiple filterable allow-create default-first-option />
         </el-form-item>
-        <el-form-item label="Tags">
+        <el-form-item :label="$t('myArticle.tags')">
           <el-select v-model="form.tags" multiple filterable allow-create default-first-option />
         </el-form-item>
-        <el-form-item label="Summary">
+        <el-form-item :label="$t('myArticle.summary')">
           <el-input v-model="form.summary" type="textarea" :rows="3" />
         </el-form-item>
-        <el-form-item label="Cover URL">
+        <el-form-item :label="$t('myArticle.coverUrl')">
           <el-input v-model="form.coverUrl" placeholder="https://..." />
         </el-form-item>
-        <el-form-item v-if="form.visibility === 'WHITELIST'" label="Whitelist user IDs">
-          <el-input v-model="whitelistInput" placeholder="Comma-separated user IDs" />
+        <el-form-item v-if="form.visibility === 'WHITELIST'" :label="$t('myArticle.whitelistUserIds')">
+          <el-input v-model="whitelistInput" :placeholder="$t('myArticle.whitelistUserIds')" />
         </el-form-item>
       </el-form>
     </div>
@@ -78,7 +81,9 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import api from '@/api/client'
 import type { ArticleEdit } from '@/api/types'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const isEdit = computed(() => !!route.params.id)
@@ -98,7 +103,6 @@ const form = reactive({
 })
 
 const whitelistInput = ref('')
-const visibilityOptions = ['PUBLIC', 'LOGIN_ONLY', 'WHITELIST', 'PRIVATE']
 
 const renderedMarkdown = computed(() => marked.parse(form.contentRaw || ''))
 
@@ -125,7 +129,7 @@ const loadArticle = async () => {
 
 const saveArticle = async () => {
   if (!form.title.trim()) {
-    ElMessage.warning('Title required')
+    ElMessage.warning(t('myArticle.titleRequired'))
     return
   }
   const whitelistUserIds =
@@ -145,10 +149,10 @@ const saveArticle = async () => {
     } else {
       await api.post('/api/user/articles', payload)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('myArticle.saved'))
     router.push('/me/articles')
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('common.error'))
   }
 }
 

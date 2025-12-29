@@ -1,9 +1,9 @@
 <template>
   <section class="container state-container">
     <div class="card-surface state-card">
-      <div class="section-title">403 - Forbidden</div>
-      <p class="muted">You do not have permission to view this page.</p>
-      <el-button type="primary" @click="goHome">Back Home</el-button>
+      <div class="section-title">403 - {{ $t('error.forbidden') }}</div>
+      <p class="muted">{{ $t('error.forbiddenDesc') }}</p>
+      <el-button type="primary" @click="goHome">{{ $t('error.backHome') }}</el-button>
     </div>
   </section>
 </template>

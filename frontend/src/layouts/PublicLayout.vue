@@ -10,10 +10,10 @@
           </div>
         </RouterLink>
         <nav class="nav-links">
-          <RouterLink to="/" class="nav-link">Home</RouterLink>
-          <RouterLink to="/articles" class="nav-link">Articles</RouterLink>
-          <RouterLink to="/albums" class="nav-link">Albums</RouterLink>
-          <RouterLink to="/search" class="nav-link">Search</RouterLink>
+          <RouterLink to="/" class="nav-link">{{ $t('nav.home') }}</RouterLink>
+          <RouterLink to="/articles" class="nav-link">{{ $t('nav.articles') }}</RouterLink>
+          <RouterLink to="/albums" class="nav-link">{{ $t('nav.albums') }}</RouterLink>
+          <RouterLink to="/search" class="nav-link">{{ $t('nav.search') }}</RouterLink>
           <template v-for="page in navPages" :key="page.id">
             <a
               v-if="page.externalUrl"
@@ -30,6 +30,22 @@
           </template>
         </nav>
         <div class="header-actions">
+          <el-dropdown @command="handleLanguageChange" class="lang-switcher">
+            <span class="lang-chip">
+              🌐 {{ currentLanguageLabel }}
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="lang in languageOptions"
+                  :key="lang.value"
+                  :command="lang.value"
+                >
+                  {{ lang.label }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
           <template v-if="auth.isAuthenticated">
             <el-dropdown>
               <span class="user-chip">
@@ -37,18 +53,18 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="goProfile">Profile</el-dropdown-item>
-                  <el-dropdown-item @click="goMyArticles">My Articles</el-dropdown-item>
-                  <el-dropdown-item @click="goMyAlbums">My Albums</el-dropdown-item>
-                  <el-dropdown-item v-if="auth.isAdmin" @click="goAdmin">Admin</el-dropdown-item>
-                  <el-dropdown-item divided @click="handleLogout">Logout</el-dropdown-item>
+                  <el-dropdown-item @click="goProfile">{{ $t('nav.profile') }}</el-dropdown-item>
+                  <el-dropdown-item @click="goMyArticles">{{ $t('nav.myArticles') }}</el-dropdown-item>
+                  <el-dropdown-item @click="goMyAlbums">{{ $t('nav.myAlbums') }}</el-dropdown-item>
+                  <el-dropdown-item v-if="auth.isAdmin" @click="goAdmin">{{ $t('nav.admin') }}</el-dropdown-item>
+                  <el-dropdown-item divided @click="handleLogout">{{ $t('nav.logout') }}</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
           </template>
           <template v-else>
-            <RouterLink to="/login" class="nav-button">Login</RouterLink>
-            <RouterLink to="/register" class="nav-button ghost">Register</RouterLink>
+            <RouterLink to="/login" class="nav-button">{{ $t('nav.login') }}</RouterLink>
+            <RouterLink to="/register" class="nav-button ghost">{{ $t('nav.register') }}</RouterLink>
           </template>
         </div>
       </div>
@@ -59,7 +75,7 @@
     <footer class="public-footer">
       <div class="container footer-inner">
         <span class="muted">© {{ new Date().getFullYear() }} {{ siteName }}</span>
-        <span class="muted">Built with Spring + Vite</span>
+        <span class="muted">{{ $t('footer.builtWith') }}</span>
       </div>
     </footer>
   </div>
@@ -70,6 +86,7 @@ import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useSiteStore } from '@/stores/site'
+import { setLocale, getLocale, languageOptions } from '@/i18n'
 
 const auth = useAuthStore()
 const site = useSiteStore()
@@ -79,6 +96,16 @@ const siteName = computed(() => site.settings.site_name || 'Blog')
 const siteDescription = computed(() => site.settings.site_description || 'Ideas, notes, and drafts')
 const logo = computed(() => site.settings.site_logo || '')
 const navPages = computed(() => site.navPages)
+
+// Language switcher
+const currentLanguageLabel = computed(() => {
+  const current = getLocale()
+  return languageOptions.find((l) => l.value === current)?.label || '简体中文'
+})
+
+const handleLanguageChange = (locale: string) => {
+  setLocale(locale)
+}
 
 const appliedLinks: HTMLLinkElement[] = []
 const appliedScripts: HTMLScriptElement[] = []
@@ -278,6 +305,24 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(15, 23, 42, 0.12);
   cursor: pointer;
   font-weight: 600;
+}
+
+.lang-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.lang-chip:hover {
+  background: rgba(30, 94, 255, 0.08);
+  border-color: rgba(30, 94, 255, 0.3);
 }
 
 .public-footer {

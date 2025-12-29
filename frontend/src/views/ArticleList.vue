@@ -2,19 +2,19 @@
   <section class="container">
     <div class="list-hero card-surface">
       <div>
-        <span class="subtle-tag">Articles</span>
-        <h1 class="serif">Explore the archive</h1>
-        <p class="muted">Browse the latest posts and ideas.</p>
+        <span class="subtle-tag">{{ $t('nav.articles') }}</span>
+        <h1 class="serif">{{ $t('article.explore') }}</h1>
+        <p class="muted">{{ $t('article.browseLatest') }}</p>
       </div>
       <div class="filters">
-        <el-input v-model="keyword" placeholder="Search by title or summary" clearable />
-        <el-select v-model="category" placeholder="Category" clearable>
+        <el-input v-model="keyword" :placeholder="$t('article.searchByTitle')" clearable />
+        <el-select v-model="category" :placeholder="$t('article.category')" clearable>
           <el-option v-for="item in categories" :key="item.slug" :label="item.name" :value="item.slug" />
         </el-select>
-        <el-select v-model="tag" placeholder="Tag" clearable>
+        <el-select v-model="tag" :placeholder="$t('article.tag')" clearable>
           <el-option v-for="item in tags" :key="item.slug" :label="item.name" :value="item.slug" />
         </el-select>
-        <el-button type="primary" @click="applySearch">Search</el-button>
+        <el-button type="primary" @click="applySearch">{{ $t('common.search') }}</el-button>
       </div>
     </div>
     <div class="article-grid">

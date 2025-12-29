@@ -1,9 +1,9 @@
 <template>
   <section class="container state-container">
     <div class="card-surface state-card">
-      <div class="section-title">404 - Not Found</div>
-      <p class="muted">We could not find the page you were looking for.</p>
-      <el-button type="primary" @click="goHome">Back Home</el-button>
+      <div class="section-title">404 - {{ $t('error.notFound') }}</div>
+      <p class="muted">{{ $t('error.notFoundDesc') }}</p>
+      <el-button type="primary" @click="goHome">{{ $t('error.backHome') }}</el-button>
     </div>
   </section>
 </template>

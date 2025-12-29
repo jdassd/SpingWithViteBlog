@@ -5,7 +5,7 @@
         <div class="portal-title serif">{{ siteName }}</div>
         <p class="muted">{{ siteDescription }}</p>
         <div class="portal-search">
-          <el-input v-model="searchKeyword" placeholder="Search the web or site">
+          <el-input v-model="searchKeyword" :placeholder="$t('home.searchPlaceholder')">
             <template #append>
               <el-select v-model="selectedEngine" placeholder="Engine" style="width: 140px">
                 <el-option
@@ -17,7 +17,7 @@
               </el-select>
             </template>
           </el-input>
-          <el-button type="primary" @click="performSearch">Search</el-button>
+          <el-button type="primary" @click="performSearch">{{ $t('common.search') }}</el-button>
         </div>
       </div>
       <div class="portal-groups">
@@ -45,21 +45,21 @@
     <div v-else-if="homeMode === 'THEME'" class="home-theme card-surface">
       <div v-if="themeHtml" v-html="themeHtml"></div>
       <div v-else class="theme-fallback">
-        <div class="section-title">Theme home template missing</div>
-        <p class="muted">Switch home mode or upload a theme with templates/home.html.</p>
+        <div class="section-title">{{ $t('home.themeHomeMissing') }}</div>
+        <p class="muted">{{ $t('home.themeHomeTip') }}</p>
       </div>
     </div>
     <div v-else class="home-blog">
       <div class="blog-hero card-surface">
         <div>
-          <span class="subtle-tag">Latest updates</span>
+          <span class="subtle-tag">{{ $t('home.latestUpdates') }}</span>
           <h1 class="hero-title serif">{{ siteName }}</h1>
           <p class="hero-subtitle muted">{{ siteDescription }}</p>
         </div>
         <div class="hero-actions">
-          <el-input v-model="searchKeyword" placeholder="Search articles">
+          <el-input v-model="searchKeyword" :placeholder="$t('home.searchArticles')">
             <template #append>
-              <el-button @click="goSearch">Search</el-button>
+              <el-button @click="goSearch">{{ $t('common.search') }}</el-button>
             </template>
           </el-input>
         </div>

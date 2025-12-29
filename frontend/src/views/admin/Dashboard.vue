@@ -102,4 +102,20 @@ onMounted(loadStats)
   gap: 8px;
   font-size: 13px;
 }
+
+@media (max-width: 640px) {
+  .stats-grid,
+  .panel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-card,
+  .panel {
+    padding: 14px;
+  }
+}
 </style>

@@ -116,4 +116,20 @@ onMounted(() => {
   object-fit: cover;
   border-radius: 4px;
 }
+
+@media (max-width: 640px) {
+  .admin-series {
+    padding: 12px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 20px;
+  }
+}
 </style>

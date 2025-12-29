@@ -215,4 +215,38 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
 }
+
+@media (max-width: 640px) {
+  .admin-analytics {
+    padding: 12px;
+  }
+
+  .admin-analytics h1 {
+    font-size: 20px;
+  }
+
+  .stats-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

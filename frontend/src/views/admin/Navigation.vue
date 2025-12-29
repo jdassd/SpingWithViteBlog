@@ -331,4 +331,41 @@ onMounted(loadNavigation)
   display: flex;
   gap: 8px;
 }
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 12px;
+  }
+
+  .panel-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .group-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .group-actions {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .link-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .link-actions {
+    margin-top: 4px;
+  }
+
+  .group-card {
+    padding: 12px;
+  }
+}
 </style>

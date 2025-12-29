@@ -54,4 +54,14 @@ onMounted(loadLogs)
   gap: 12px;
   flex-wrap: wrap;
 }
+
+@media (max-width: 640px) {
+  .toolbar {
+    padding: 12px;
+  }
+
+  .toolbar > * {
+    flex: 1 1 100%;
+  }
+}
 </style>

@@ -113,4 +113,11 @@ onMounted(async () => {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
+
+@media (max-width: 640px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+}
 </style>

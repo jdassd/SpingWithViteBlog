@@ -159,4 +159,11 @@ onMounted(async () => {
   display: flex;
   gap: 12px;
 }
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    padding: 12px;
+  }
+}
 </style>

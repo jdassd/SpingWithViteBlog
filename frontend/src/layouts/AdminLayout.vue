@@ -1,10 +1,12 @@
 <template>
   <div class="admin-shell">
-    <aside class="admin-sidebar">
+    <!-- 移动端遮罩层 -->
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
+    <aside class="admin-sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-brand">
         <span class="brand-text">{{ $t('nav.admin') }}</span>
       </div>
-      <el-menu :default-active="activePath" class="menu" router>
+      <el-menu :default-active="activePath" class="menu" router @select="closeSidebar">
         <el-menu-item index="/admin/dashboard">{{ $t('admin.dashboard') }}</el-menu-item>
         <el-menu-item index="/admin/articles">{{ $t('admin.articles') }}</el-menu-item>
         <el-menu-item index="/admin/series">{{ $t('menu.series') }}</el-menu-item>
@@ -22,7 +24,10 @@
     </aside>
     <section class="admin-main">
       <header class="admin-topbar">
-        <div class="topbar-title">{{ pageTitle }}</div>
+        <div class="topbar-left">
+          <button class="menu-toggle" @click="sidebarOpen = !sidebarOpen">☰</button>
+          <div class="topbar-title">{{ pageTitle }}</div>
+        </div>
         <div class="topbar-actions">
           <el-dropdown @command="handleLanguageChange" class="lang-switcher">
             <span class="lang-chip">🌐 {{ currentLanguageLabel }}</span>
@@ -54,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { setLocale, getLocale, languageOptions } from '@/i18n'
@@ -65,6 +70,12 @@ const auth = useAuthStore()
 
 const activePath = computed(() => route.path)
 const pageTitle = computed(() => (route.meta?.title as string) || 'Admin')
+
+// 移动端侧边栏状态
+const sidebarOpen = ref(false)
+const closeSidebar = () => {
+  sidebarOpen.value = false
+}
 
 // Language switcher
 const currentLanguageLabel = computed(() => {
@@ -146,6 +157,12 @@ const goProfile = () => router.push('/profile')
   backdrop-filter: blur(16px);
 }
 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .topbar-title {
   font-size: 20px;
   font-weight: 600;
@@ -184,14 +201,91 @@ const goProfile = () => router.push('/profile')
   padding: 28px 32px 50px;
 }
 
-@media (max-width: 980px) {
+/* 汉堡菜单按钮 - 默认隐藏 */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: var(--surface);
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 遮罩层 - 默认隐藏 */
+.sidebar-overlay {
+  display: none;
+}
+
+/* 移动端响应式 */
+@media (max-width: 768px) {
   .admin-shell {
     grid-template-columns: 1fr;
   }
+
   .admin-sidebar {
-    position: sticky;
+    position: fixed;
+    left: 0;
     top: 0;
-    z-index: 5;
+    bottom: 0;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .admin-topbar {
+    padding: 12px 16px;
+  }
+
+  .topbar-title {
+    font-size: 16px;
+  }
+
+  .topbar-actions {
+    gap: 6px;
+  }
+
+  .lang-chip,
+  .user-chip {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .admin-content {
+    padding: 16px;
+  }
+}
+
+/* 小手机适配 */
+@media (max-width: 480px) {
+  .topbar-actions .el-button {
+    display: none;
+  }
+
+  .admin-content {
+    padding: 12px;
   }
 }
 </style>

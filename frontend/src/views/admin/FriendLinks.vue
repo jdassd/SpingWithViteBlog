@@ -258,4 +258,25 @@ onMounted(() => {
   border-radius: 4px;
   object-fit: cover;
 }
+
+@media (max-width: 640px) {
+  .admin-friend-links {
+    padding: 12px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 20px;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+}
 </style>

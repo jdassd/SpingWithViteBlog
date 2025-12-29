@@ -173,4 +173,18 @@ onMounted(() => {
   font-size: 13px;
   margin-bottom: 12px;
 }
+
+@media (max-width: 640px) {
+  .admin-series-editor {
+    padding: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 20px;
+  }
+
+  .el-form {
+    max-width: 100% !important;
+  }
+}
 </style>

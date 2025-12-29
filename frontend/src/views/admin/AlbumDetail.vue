@@ -184,4 +184,30 @@ onMounted(loadAlbum)
   flex-wrap: wrap;
   gap: 8px;
 }
+
+@media (max-width: 640px) {
+  .album-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .album-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .album-card,
+  .upload-card {
+    padding: 12px;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .photo-card img {
+    height: 120px;
+  }
+}
 </style>

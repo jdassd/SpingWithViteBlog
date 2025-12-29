@@ -126,4 +126,12 @@ onMounted(loadThemes)
   gap: 12px;
   align-items: center;
 }
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+}
 </style>

@@ -154,3 +154,59 @@ a {
 .el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
   background-color: var(--brand);
 }
+
+/* 移动端响应式适配 */
+@media (max-width: 768px) {
+  /* 表格响应式 - 添加横向滚动容器 */
+  .el-table {
+    width: 100%;
+  }
+
+  .el-table__body-wrapper {
+    overflow-x: auto;
+  }
+
+  /* 对话框自适应 */
+  .el-dialog {
+    --el-dialog-width: 92% !important;
+    max-width: 520px;
+    margin: 10vh auto !important;
+  }
+
+  /* 按钮适配 */
+  .el-button {
+    padding: 10px 16px;
+  }
+
+  .el-button--small {
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .el-dialog {
+    --el-dialog-width: 95% !important;
+    margin: 5vh auto !important;
+  }
+
+  .el-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .el-button--small {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  /* 表单元素适配 */
+  .el-input,
+  .el-select,
+  .el-textarea {
+    width: 100%;
+  }
+
+  .el-form-item__label {
+    font-size: 13px;
+  }
+}

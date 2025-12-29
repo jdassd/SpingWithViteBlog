@@ -496,4 +496,23 @@ onMounted(async () => {
   display: flex;
   gap: 12px;
 }
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 12px;
+  }
+
+  .upload-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .git-actions {
+    flex-direction: column;
+  }
+
+  .history-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

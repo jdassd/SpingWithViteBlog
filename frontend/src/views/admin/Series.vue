@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import type { Series } from '@/api/types'

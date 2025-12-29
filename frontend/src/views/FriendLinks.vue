@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import { Link } from '@element-plus/icons-vue'
 import type { FriendLink } from '@/api/types'
 

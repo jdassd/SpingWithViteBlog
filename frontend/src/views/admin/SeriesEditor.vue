@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import { ElMessage } from 'element-plus'
 
 const route = useRoute()
@@ -147,6 +147,7 @@ const save = async () => {
 
 const removeArticle = async (articleId: number) => {
   // TODO: implement remove article from series
+  console.log('Remove article:', articleId)
   ElMessage.info('移除文章功能待实现')
 }
 

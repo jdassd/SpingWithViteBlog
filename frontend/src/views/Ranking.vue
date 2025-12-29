@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import { View, Star, ChatDotRound, Collection } from '@element-plus/icons-vue'
 import type { RankingItem } from '@/api/types'
 

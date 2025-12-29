@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import type { FriendLink } from '@/api/types'

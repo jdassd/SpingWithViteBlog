@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import type { Series } from '@/api/types'
 
 interface ArticleInSeries {

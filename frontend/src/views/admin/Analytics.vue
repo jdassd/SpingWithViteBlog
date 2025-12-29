@@ -79,7 +79,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { api } from '@/api/client'
+import api from '@/api/client'
 import { ElMessage } from 'element-plus'
 import type { Analytics, RankingConfig } from '@/api/types'
 

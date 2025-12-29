@@ -29,7 +29,7 @@
         </el-form-item>
         <el-form-item v-if="!form.externalUrl" label="Content">
           <div v-if="form.contentType === 'MARKDOWN'" class="editor-split">
-            <el-input v-model="form.contentRaw" type="textarea" :rows="10" />
+            <el-input v-model="form.contentRaw" type="textarea" :autosize="{ minRows: 20, maxRows: 60 }" />
             <div class="preview" v-html="renderedMarkdown"></div>
           </div>
           <div v-else>
@@ -170,6 +170,7 @@ onMounted(async () => {
   border-radius: 12px;
   padding: 16px;
   overflow: auto;
+  min-height: 460px;
 }
 
 .form-grid {

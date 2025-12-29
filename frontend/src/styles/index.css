@@ -127,6 +127,12 @@ a {
 .el-button {
   border-radius: 999px;
   font-weight: 600;
+  padding: 12px 24px;
+  height: auto;
+}
+
+.el-textarea__inner {
+  min-height: 120px;
 }
 
 .el-button--primary {

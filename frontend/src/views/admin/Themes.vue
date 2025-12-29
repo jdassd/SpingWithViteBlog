@@ -2,28 +2,28 @@
   <section class="admin-section">
     <div class="toolbar card-surface">
       <input type="file" @change="importTheme" />
-      <el-checkbox v-model="activateOnImport">Activate after import</el-checkbox>
+      <el-checkbox v-model="activateOnImport">{{ $t('admin.labels.activateAfterImport') }}</el-checkbox>
     </div>
     <el-table :data="themes" stripe>
-      <el-table-column prop="name" label="Name" min-width="160" />
-      <el-table-column prop="version" label="Version" width="120" />
-      <el-table-column prop="author" label="Author" width="140" />
-      <el-table-column prop="isActive" label="Active" width="100" />
-      <el-table-column label="Actions" width="320">
+      <el-table-column prop="name" :label="$t('admin.columns.name')" min-width="160" />
+      <el-table-column prop="version" :label="$t('admin.columns.version')" width="120" />
+      <el-table-column prop="author" :label="$t('admin.columns.author')" width="140" />
+      <el-table-column prop="isActive" :label="$t('admin.columns.active')" width="100" />
+      <el-table-column :label="$t('admin.columns.actions')" width="320">
         <template #default="{ row }">
-          <el-button size="small" @click="activateTheme(row)">Activate</el-button>
-          <el-button size="small" @click="openConfig(row)">Config</el-button>
-          <el-button size="small" @click="exportTheme(row)">Export</el-button>
-          <el-button size="small" type="danger" @click="deleteTheme(row)" :disabled="row.isActive">Delete</el-button>
+          <el-button size="small" @click="activateTheme(row)">{{ $t('admin.actions.activate') }}</el-button>
+          <el-button size="small" @click="openConfig(row)">{{ $t('admin.actions.config') }}</el-button>
+          <el-button size="small" @click="exportTheme(row)">{{ $t('admin.actions.export') }}</el-button>
+          <el-button size="small" type="danger" @click="deleteTheme(row)" :disabled="row.isActive">{{ $t('admin.actions.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="showConfig" width="600px" title="Theme Config">
+    <el-dialog v-model="showConfig" width="600px" :title="$t('admin.dialogs.themeConfig')">
       <el-input v-model="configJson" type="textarea" :rows="10" />
       <template #footer>
-        <el-button @click="showConfig = false">Cancel</el-button>
-        <el-button type="primary" @click="saveConfig">Save</el-button>
+        <el-button @click="showConfig = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="saveConfig">{{ $t('common.save') }}</el-button>
       </template>
     </el-dialog>
   </section>
@@ -32,9 +32,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { Theme } from '@/api/types'
 
+const { t } = useI18n()
 const themes = ref<Theme[]>([])
 const activateOnImport = ref(false)
 const showConfig = ref(false)
@@ -58,10 +60,10 @@ const importTheme = async (event: Event) => {
       params: { activate: activateOnImport.value },
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-    ElMessage.success('Imported')
+    ElMessage.success(t('admin.messages.imported'))
     await loadThemes()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Import failed')
+    ElMessage.error(err?.message || t('admin.messages.importFailed'))
   } finally {
     target.value = ''
   }
@@ -69,7 +71,7 @@ const importTheme = async (event: Event) => {
 
 const activateTheme = async (theme: Theme) => {
   await api.post(`/api/admin/themes/${theme.id}/activate`)
-  ElMessage.success('Activated')
+  ElMessage.success(t('admin.messages.activated'))
   await loadThemes()
 }
 
@@ -85,11 +87,11 @@ const saveConfig = async () => {
   }
   try {
     await api.put(`/api/admin/themes/${editingThemeId.value}/config`, { configJson: configJson.value })
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     showConfig.value = false
     await loadThemes()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 
@@ -99,13 +101,13 @@ const exportTheme = async (theme: Theme) => {
 }
 
 const deleteTheme = async (theme: Theme) => {
-  await ElMessageBox.confirm('Delete this theme?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteTheme'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/themes/${theme.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadThemes()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 

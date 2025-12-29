@@ -1,40 +1,40 @@
 <template>
   <section class="admin-section">
     <div class="toolbar card-surface">
-      <el-input v-model="filters.keyword" placeholder="Keyword" clearable />
-      <el-select v-model="filters.status" placeholder="Status" clearable>
-        <el-option label="Draft" value="DRAFT" />
-        <el-option label="Published" value="PUBLISHED" />
-        <el-option label="Archived" value="ARCHIVED" />
+      <el-input v-model="filters.keyword" :placeholder="$t('admin.labels.keyword')" clearable />
+      <el-select v-model="filters.status" :placeholder="$t('admin.columns.status')" clearable>
+        <el-option :label="$t('admin.statusOptions.draft')" value="DRAFT" />
+        <el-option :label="$t('admin.statusOptions.published')" value="PUBLISHED" />
+        <el-option :label="$t('admin.statusOptions.archived')" value="ARCHIVED" />
       </el-select>
-      <el-select v-model="filters.contentType" placeholder="Content type" clearable>
-        <el-option label="Markdown" value="MARKDOWN" />
-        <el-option label="Rich Text" value="RICH_TEXT" />
+      <el-select v-model="filters.contentType" :placeholder="$t('admin.labels.contentType')" clearable>
+        <el-option :label="$t('admin.labels.markdown')" value="MARKDOWN" />
+        <el-option :label="$t('admin.labels.richText')" value="RICH_TEXT" />
       </el-select>
-      <el-select v-model="filters.visibility" placeholder="Visibility" clearable>
-        <el-option label="Public" value="PUBLIC" />
-        <el-option label="Login only" value="LOGIN_ONLY" />
-        <el-option label="Whitelist" value="WHITELIST" />
-        <el-option label="Private" value="PRIVATE" />
-        <el-option label="Admin only" value="ADMIN_ONLY" />
+      <el-select v-model="filters.visibility" :placeholder="$t('admin.columns.visibility')" clearable>
+        <el-option :label="$t('admin.visibilityOptions.public')" value="PUBLIC" />
+        <el-option :label="$t('admin.visibilityOptions.loginOnly')" value="LOGIN_ONLY" />
+        <el-option :label="$t('admin.visibilityOptions.whitelist')" value="WHITELIST" />
+        <el-option :label="$t('admin.visibilityOptions.private')" value="PRIVATE" />
+        <el-option :label="$t('admin.visibilityOptions.adminOnly')" value="ADMIN_ONLY" />
       </el-select>
-      <el-select v-model="filters.authorId" placeholder="Author" clearable>
+      <el-select v-model="filters.authorId" :placeholder="$t('admin.columns.author')" clearable>
         <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
       </el-select>
-      <el-button type="primary" @click="loadArticles">Filter</el-button>
-      <el-button @click="newArticle">New</el-button>
+      <el-button type="primary" @click="loadArticles">{{ $t('admin.filter') }}</el-button>
+      <el-button @click="newArticle">{{ $t('admin.new') }}</el-button>
     </div>
 
     <el-table :data="articles" stripe>
-      <el-table-column prop="title" label="Title" min-width="220" />
-      <el-table-column prop="status" label="Status" width="120" />
-      <el-table-column prop="visibility" label="Visibility" width="140" />
-      <el-table-column prop="contentType" label="Type" width="120" />
-      <el-table-column prop="createdAt" label="Created" width="170" />
-      <el-table-column label="Actions" width="200">
+      <el-table-column prop="title" :label="$t('admin.columns.title')" min-width="220" />
+      <el-table-column prop="status" :label="$t('admin.columns.status')" width="120" />
+      <el-table-column prop="visibility" :label="$t('admin.columns.visibility')" width="140" />
+      <el-table-column prop="contentType" :label="$t('admin.columns.type')" width="120" />
+      <el-table-column prop="createdAt" :label="$t('admin.columns.created')" width="170" />
+      <el-table-column :label="$t('admin.columns.actions')" width="200">
         <template #default="{ row }">
-          <el-button size="small" @click="editArticle(row)">Edit</el-button>
-          <el-button size="small" type="danger" @click="deleteArticle(row)">Delete</el-button>
+          <el-button size="small" @click="editArticle(row)">{{ $t('admin.actions.edit') }}</el-button>
+          <el-button size="small" type="danger" @click="deleteArticle(row)">{{ $t('admin.actions.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,9 +45,11 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { ArticleSummary, User } from '@/api/types'
 
+const { t } = useI18n()
 const router = useRouter()
 const articles = ref<ArticleSummary[]>([])
 const users = ref<User[]>([])
@@ -83,13 +85,13 @@ const newArticle = () => router.push('/admin/articles/new')
 const editArticle = (row: ArticleSummary) => router.push(`/admin/articles/${row.id}`)
 
 const deleteArticle = async (row: ArticleSummary) => {
-  await ElMessageBox.confirm('Delete this article?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteArticle'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/articles/${row.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadArticles()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 

@@ -8,8 +8,8 @@
           <p class="muted">{{ album?.description }}</p>
         </div>
         <div class="album-actions">
-          <el-switch v-model="autoSync" active-text="Auto sync" />
-          <el-button @click="goBack">Back</el-button>
+          <el-switch v-model="autoSync" :active-text="$t('admin.labels.autoSync')" />
+          <el-button @click="goBack">{{ $t('admin.actions.back') }}</el-button>
         </div>
       </div>
     </div>
@@ -24,10 +24,10 @@
           <span v-if="photo.syncError" class="muted">{{ photo.syncError }}</span>
         </div>
         <div class="photo-actions">
-          <el-button size="small" @click="setCover(photo)">Set Cover</el-button>
-          <el-button size="small" @click="editTags(photo)">Tags</el-button>
-          <el-button size="small" @click="syncPhoto(photo)">Sync</el-button>
-          <el-button size="small" type="danger" @click="deletePhoto(photo)">Delete</el-button>
+          <el-button size="small" @click="setCover(photo)">{{ $t('admin.actions.setCover') }}</el-button>
+          <el-button size="small" @click="editTags(photo)">{{ $t('admin.labels.tags') }}</el-button>
+          <el-button size="small" @click="syncPhoto(photo)">{{ $t('admin.actions.sync') }}</el-button>
+          <el-button size="small" type="danger" @click="deletePhoto(photo)">{{ $t('admin.actions.delete') }}</el-button>
         </div>
       </div>
     </div>
@@ -38,9 +38,11 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { Album, Photo } from '@/api/types'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const album = ref<Album | null>(null)
@@ -66,9 +68,9 @@ const handleUpload = async (event: Event) => {
       params: { autoSync: autoSync.value },
     })
     photos.value = await api.get<Photo[]>(`/api/admin/albums/${route.params.id}/photos`)
-    ElMessage.success('Uploaded')
+    ElMessage.success(t('admin.messages.uploaded'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Upload failed')
+    ElMessage.error(err?.message || t('admin.messages.uploadFailed'))
   } finally {
     target.value = ''
   }
@@ -79,53 +81,53 @@ const setCover = async (photo: Photo) => {
     await api.post(`/api/admin/albums/${route.params.id}/cover`, null, {
       params: { photoId: photo.id },
     })
-    ElMessage.success('Cover updated')
+    ElMessage.success(t('admin.messages.coverUpdated'))
     await loadAlbum()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Update failed')
+    ElMessage.error(err?.message || t('admin.messages.updateFailed'))
   }
 }
 
 const syncPhoto = async (photo: Photo) => {
   try {
     await api.post(`/api/admin/albums/photos/${photo.id}/sync`)
-    ElMessage.success('Sync triggered')
+    ElMessage.success(t('admin.messages.syncTriggered'))
     await loadAlbum()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Sync failed')
+    ElMessage.error(err?.message || t('admin.messages.syncFailed'))
   }
 }
 
 const editTags = async (photo: Photo) => {
   try {
-    const { value } = await ElMessageBox.prompt('Enter tags (comma separated)', 'Edit Tags', {
+    const { value } = await ElMessageBox.prompt(t('admin.messages.enterTags'), t('admin.dialogs.editTags'), {
       inputValue: (photo.tags || []).join(','),
-      confirmButtonText: 'Save',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t('common.save'),
+      cancelButtonText: t('common.cancel'),
     })
     const tags = value
       .split(',')
       .map((tag) => tag.trim())
       .filter((tag) => tag)
     await api.patch(`/api/admin/albums/photos/${photo.id}/tags`, { tags })
-    ElMessage.success('Tags updated')
+    ElMessage.success(t('admin.messages.tagsUpdated'))
     await loadAlbum()
   } catch (err: any) {
     if (err === 'cancel' || err === 'close') {
       return
     }
-    ElMessage.error(err?.message || 'Update failed')
+    ElMessage.error(err?.message || t('admin.messages.updateFailed'))
   }
 }
 
 const deletePhoto = async (photo: Photo) => {
-  await ElMessageBox.confirm('Delete this photo?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deletePhoto'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/albums/photos/${photo.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadAlbum()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 

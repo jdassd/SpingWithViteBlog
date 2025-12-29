@@ -2,17 +2,17 @@
   <section class="admin-section">
     <div class="card-surface panel">
       <div class="panel-head">
-        <div class="section-title">Navigation Groups</div>
-        <el-button type="primary" @click="openGroupEditor()">New Group</el-button>
+        <div class="section-title">{{ $t('admin.navManage.groups') }}</div>
+        <el-button type="primary" @click="openGroupEditor()">{{ $t('admin.newGroup') }}</el-button>
       </div>
       <div class="group-grid">
         <div v-for="group in groups" :key="group.id" class="group-card card-surface">
           <div class="group-head">
             <div class="group-title">{{ group.name }}</div>
             <div class="group-actions">
-              <el-button size="small" @click="openGroupEditor(group)">Edit</el-button>
-              <el-button size="small" type="danger" @click="deleteGroup(group)">Delete</el-button>
-              <el-button size="small" type="primary" @click="openLinkEditor(group)">Add Link</el-button>
+              <el-button size="small" @click="openGroupEditor(group)">{{ $t('admin.actions.edit') }}</el-button>
+              <el-button size="small" type="danger" @click="deleteGroup(group)">{{ $t('admin.actions.delete') }}</el-button>
+              <el-button size="small" type="primary" @click="openLinkEditor(group)">{{ $t('admin.addLink') }}</el-button>
             </div>
           </div>
           <div class="link-list">
@@ -22,8 +22,8 @@
                 <div class="muted">{{ link.url }}</div>
               </div>
               <div class="link-actions">
-                <el-button size="small" @click="openLinkEditor(group, link)">Edit</el-button>
-                <el-button size="small" type="danger" @click="deleteLink(link)">Delete</el-button>
+                <el-button size="small" @click="openLinkEditor(group, link)">{{ $t('admin.actions.edit') }}</el-button>
+                <el-button size="small" type="danger" @click="deleteLink(link)">{{ $t('admin.actions.delete') }}</el-button>
               </div>
             </div>
           </div>
@@ -33,88 +33,88 @@
 
     <div class="card-surface panel">
       <div class="panel-head">
-        <div class="section-title">Search Engines</div>
-        <el-button type="primary" @click="openEngineEditor()">New Engine</el-button>
+        <div class="section-title">{{ $t('admin.navManage.searchEngines') }}</div>
+        <el-button type="primary" @click="openEngineEditor()">{{ $t('admin.newEngine') }}</el-button>
       </div>
       <el-table :data="searchEngines" stripe>
-        <el-table-column prop="name" label="Name" width="160" />
-        <el-table-column prop="queryUrl" label="Query URL" min-width="220" />
-        <el-table-column prop="enabled" label="Enabled" width="100" />
-        <el-table-column prop="isDefault" label="Default" width="100" />
-        <el-table-column label="Actions" width="200">
+        <el-table-column prop="name" :label="$t('admin.columns.name')" width="160" />
+        <el-table-column prop="queryUrl" :label="$t('admin.columns.queryUrl')" min-width="220" />
+        <el-table-column prop="enabled" :label="$t('admin.columns.enabled')" width="100" />
+        <el-table-column prop="isDefault" :label="$t('admin.columns.default')" width="100" />
+        <el-table-column :label="$t('admin.columns.actions')" width="200">
           <template #default="{ row }">
-            <el-button size="small" @click="openEngineEditor(row)">Edit</el-button>
-            <el-button size="small" type="danger" @click="deleteEngine(row)">Delete</el-button>
+            <el-button size="small" @click="openEngineEditor(row)">{{ $t('admin.actions.edit') }}</el-button>
+            <el-button size="small" type="danger" @click="deleteEngine(row)">{{ $t('admin.actions.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
 
-    <el-dialog v-model="showGroupEditor" width="420px" :title="editingGroup ? 'Edit Group' : 'New Group'">
+    <el-dialog v-model="showGroupEditor" width="420px" :title="editingGroup ? $t('admin.dialogs.editGroup') : $t('admin.dialogs.newGroup')">
       <el-form :model="groupForm" label-position="top">
-        <el-form-item label="Name">
+        <el-form-item :label="$t('admin.columns.name')">
           <el-input v-model="groupForm.name" />
         </el-form-item>
-        <el-form-item label="Sort Order">
+        <el-form-item :label="$t('admin.labels.sortOrder')">
           <el-input-number v-model="groupForm.sortOrder" :min="0" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showGroupEditor = false">Cancel</el-button>
-        <el-button type="primary" @click="saveGroup">Save</el-button>
+        <el-button @click="showGroupEditor = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="saveGroup">{{ $t('common.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="showLinkEditor" width="520px" :title="editingLink ? 'Edit Link' : 'New Link'">
+    <el-dialog v-model="showLinkEditor" width="520px" :title="editingLink ? $t('admin.dialogs.editLink') : $t('admin.dialogs.newLink')">
       <el-form :model="linkForm" label-position="top">
-        <el-form-item label="Group">
+        <el-form-item :label="$t('admin.labels.group')">
           <el-select v-model="linkForm.groupId">
             <el-option v-for="group in groups" :key="group.id" :label="group.name" :value="group.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Name">
+        <el-form-item :label="$t('admin.columns.name')">
           <el-input v-model="linkForm.name" />
         </el-form-item>
-        <el-form-item label="URL">
+        <el-form-item :label="$t('admin.labels.url')">
           <el-input v-model="linkForm.url" />
         </el-form-item>
-        <el-form-item label="Icon URL">
+        <el-form-item :label="$t('admin.labels.iconUrl')">
           <el-input v-model="linkForm.icon" />
         </el-form-item>
-        <el-form-item label="Description">
+        <el-form-item :label="$t('admin.labels.description')">
           <el-input v-model="linkForm.description" />
         </el-form-item>
-        <el-form-item label="Open in new">
+        <el-form-item :label="$t('admin.labels.openInNew')">
           <el-switch v-model="linkForm.openInNew" />
         </el-form-item>
-        <el-form-item label="Sort Order">
+        <el-form-item :label="$t('admin.labels.sortOrder')">
           <el-input-number v-model="linkForm.sortOrder" :min="0" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showLinkEditor = false">Cancel</el-button>
-        <el-button type="primary" @click="saveLink">Save</el-button>
+        <el-button @click="showLinkEditor = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="saveLink">{{ $t('common.save') }}</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="showEngineEditor" width="520px" :title="editingEngine ? 'Edit Engine' : 'New Engine'">
+    <el-dialog v-model="showEngineEditor" width="520px" :title="editingEngine ? $t('admin.dialogs.editEngine') : $t('admin.dialogs.newEngine')">
       <el-form :model="engineForm" label-position="top">
-        <el-form-item label="Name">
+        <el-form-item :label="$t('admin.columns.name')">
           <el-input v-model="engineForm.name" />
         </el-form-item>
-        <el-form-item label="Query URL">
+        <el-form-item :label="$t('admin.columns.queryUrl')">
           <el-input v-model="engineForm.queryUrl" placeholder="https://search?q={q}" />
         </el-form-item>
-        <el-form-item label="Enabled">
+        <el-form-item :label="$t('admin.columns.enabled')">
           <el-switch v-model="engineForm.enabled" />
         </el-form-item>
-        <el-form-item label="Default">
+        <el-form-item :label="$t('admin.columns.default')">
           <el-switch v-model="engineForm.isDefault" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showEngineEditor = false">Cancel</el-button>
-        <el-button type="primary" @click="saveEngine">Save</el-button>
+        <el-button @click="showEngineEditor = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="saveEngine">{{ $t('common.save') }}</el-button>
       </template>
     </el-dialog>
   </section>
@@ -123,9 +123,11 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { NavigationGroup, NavigationLink, SearchEngine } from '@/api/types'
 
+const { t } = useI18n()
 const groups = ref<NavigationGroup[]>([])
 const searchEngines = ref<SearchEngine[]>([])
 
@@ -176,22 +178,22 @@ const saveGroup = async () => {
     } else {
       await api.post('/api/admin/navigation/groups', groupForm)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     showGroupEditor.value = false
     await loadNavigation()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 
 const deleteGroup = async (group: NavigationGroup) => {
-  await ElMessageBox.confirm('Delete this group?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteGroup'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/navigation/groups/${group.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadNavigation()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 
@@ -214,22 +216,22 @@ const saveLink = async () => {
     } else {
       await api.post('/api/admin/navigation/links', linkForm)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     showLinkEditor.value = false
     await loadNavigation()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 
 const deleteLink = async (link: NavigationLink) => {
-  await ElMessageBox.confirm('Delete this link?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteLink'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/navigation/links/${link.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadNavigation()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 
@@ -249,22 +251,22 @@ const saveEngine = async () => {
     } else {
       await api.post('/api/admin/navigation/search-engines', engineForm)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     showEngineEditor.value = false
     await loadNavigation()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 
 const deleteEngine = async (engine: SearchEngine) => {
-  await ElMessageBox.confirm('Delete this engine?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteEngine'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/navigation/search-engines/${engine.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadNavigation()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 

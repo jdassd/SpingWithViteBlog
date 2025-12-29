@@ -3,25 +3,25 @@
     <div class="card-surface editor-card">
       <div class="editor-head">
         <div>
-          <span class="subtle-tag">Admin Editor</span>
-          <h1 class="serif">{{ isEdit ? 'Edit Article' : 'New Article' }}</h1>
+          <span class="subtle-tag">{{ $t('admin.editor.adminEditor') }}</span>
+          <h1 class="serif">{{ isEdit ? $t('admin.editor.editArticle') : $t('admin.editor.newArticle') }}</h1>
         </div>
         <div class="editor-actions">
-          <el-button @click="goBack">Cancel</el-button>
-          <el-button type="primary" @click="saveArticle">{{ isEdit ? 'Update' : 'Publish' }}</el-button>
+          <el-button @click="goBack">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="saveArticle">{{ isEdit ? $t('admin.actions.update') : $t('admin.actions.publish') }}</el-button>
         </div>
       </div>
       <el-form :model="form" label-position="top">
-        <el-form-item label="Title">
-          <el-input v-model="form.title" placeholder="Enter title" />
+        <el-form-item :label="$t('admin.columns.title')">
+          <el-input v-model="form.title" :placeholder="$t('admin.editor.enterTitle')" />
         </el-form-item>
-        <el-form-item label="Content Type">
+        <el-form-item :label="$t('admin.labels.contentType')">
           <el-radio-group v-model="form.contentType">
-            <el-radio-button label="MARKDOWN">Markdown</el-radio-button>
-            <el-radio-button label="RICH_TEXT">Rich Text</el-radio-button>
+            <el-radio-button label="MARKDOWN">{{ $t('admin.labels.markdown') }}</el-radio-button>
+            <el-radio-button label="RICH_TEXT">{{ $t('admin.labels.richText') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="Content">
+        <el-form-item :label="$t('admin.editor.content')">
           <div v-if="form.contentType === 'MARKDOWN'" class="editor-split">
             <el-input v-model="form.contentRaw" type="textarea" :autosize="{ minRows: 20, maxRows: 60 }" />
             <div class="preview" v-html="renderedMarkdown"></div>
@@ -31,38 +31,38 @@
           </div>
         </el-form-item>
         <div class="form-grid">
-          <el-form-item label="Visibility">
-            <el-select v-model="form.visibility" placeholder="Select visibility">
-              <el-option v-for="option in visibilityOptions" :key="option" :label="option" :value="option" />
+          <el-form-item :label="$t('admin.labels.visibility')">
+            <el-select v-model="form.visibility" :placeholder="$t('admin.labels.visibility')">
+              <el-option v-for="option in visibilityOptions" :key="option" :label="getVisibilityLabel(option)" :value="option" />
             </el-select>
           </el-form-item>
-          <el-form-item label="Status">
+          <el-form-item :label="$t('admin.columns.status')">
             <el-select v-model="form.status">
-              <el-option label="Draft" value="DRAFT" />
-              <el-option label="Published" value="PUBLISHED" />
-              <el-option label="Archived" value="ARCHIVED" />
+              <el-option :label="$t('admin.statusOptions.draft')" value="DRAFT" />
+              <el-option :label="$t('admin.statusOptions.published')" value="PUBLISHED" />
+              <el-option :label="$t('admin.statusOptions.archived')" value="ARCHIVED" />
             </el-select>
           </el-form-item>
-          <el-form-item label="RSS Enabled">
+          <el-form-item :label="$t('admin.labels.rssEnabled')">
             <el-switch v-model="form.rssEnabled" />
           </el-form-item>
-          <el-form-item label="Allow Index">
+          <el-form-item :label="$t('admin.labels.allowIndex')">
             <el-switch v-model="form.allowIndex" />
           </el-form-item>
         </div>
-        <el-form-item label="Categories">
+        <el-form-item :label="$t('admin.labels.categories')">
           <el-select v-model="form.categories" multiple filterable allow-create default-first-option />
         </el-form-item>
-        <el-form-item label="Tags">
+        <el-form-item :label="$t('admin.labels.tags')">
           <el-select v-model="form.tags" multiple filterable allow-create default-first-option />
         </el-form-item>
-        <el-form-item label="Summary">
+        <el-form-item :label="$t('admin.labels.summary')">
           <el-input v-model="form.summary" type="textarea" :rows="3" />
         </el-form-item>
-        <el-form-item label="Cover URL">
+        <el-form-item :label="$t('admin.labels.coverUrl')">
           <el-input v-model="form.coverUrl" placeholder="https://..." />
         </el-form-item>
-        <el-form-item v-if="form.visibility === 'WHITELIST'" label="Whitelist users">
+        <el-form-item v-if="form.visibility === 'WHITELIST'" :label="$t('admin.labels.whitelistUsers')">
           <el-select v-model="form.whitelistUserIds" multiple filterable>
             <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
           </el-select>
@@ -76,18 +76,31 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { marked } from 'marked'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import api from '@/api/client'
 import type { ArticleEdit, User } from '@/api/types'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const isEdit = computed(() => !!route.params.id)
 
 const users = ref<User[]>([])
 const visibilityOptions = ['PUBLIC', 'LOGIN_ONLY', 'WHITELIST', 'PRIVATE', 'ADMIN_ONLY']
+
+const getVisibilityLabel = (option: string) => {
+  const map: Record<string, string> = {
+    PUBLIC: t('admin.visibilityOptions.public'),
+    LOGIN_ONLY: t('admin.visibilityOptions.loginOnly'),
+    WHITELIST: t('admin.visibilityOptions.whitelist'),
+    PRIVATE: t('admin.visibilityOptions.private'),
+    ADMIN_ONLY: t('admin.visibilityOptions.adminOnly'),
+  }
+  return map[option] || option
+}
 
 const form = reactive({
   title: '',
@@ -131,7 +144,7 @@ const loadArticle = async () => {
 
 const saveArticle = async () => {
   if (!form.title.trim()) {
-    ElMessage.warning('Title required')
+    ElMessage.warning(t('admin.messages.titleRequired'))
     return
   }
   const payload = {
@@ -143,10 +156,10 @@ const saveArticle = async () => {
     } else {
       await api.post('/api/admin/articles', payload)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     router.push('/admin/articles')
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 

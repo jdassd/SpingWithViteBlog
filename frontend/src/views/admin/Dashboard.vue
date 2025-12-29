@@ -2,38 +2,38 @@
   <section class="dashboard-grid">
     <div class="stats-grid">
       <div class="stat-card card-surface">
-        <div class="stat-title">Articles</div>
+        <div class="stat-title">{{ $t('admin.dashboardStats.articles') }}</div>
         <div class="stat-value">{{ stats?.articlesTotal }}</div>
-        <div class="muted">Published: {{ stats?.articlesPublished }} | Draft: {{ stats?.articlesDraft }}</div>
+        <div class="muted">{{ $t('admin.dashboardStats.published') }}: {{ stats?.articlesPublished }} | {{ $t('admin.dashboardStats.draft') }}: {{ stats?.articlesDraft }}</div>
       </div>
       <div class="stat-card card-surface">
-        <div class="stat-title">Comments</div>
+        <div class="stat-title">{{ $t('admin.dashboardStats.comments') }}</div>
         <div class="stat-value">{{ stats?.commentsTotal }}</div>
-        <div class="muted">Pending: {{ stats?.commentsPending }} | Blocked: {{ stats?.commentsBlocked }}</div>
+        <div class="muted">{{ $t('admin.dashboardStats.pending') }}: {{ stats?.commentsPending }} | {{ $t('admin.dashboardStats.blocked') }}: {{ stats?.commentsBlocked }}</div>
       </div>
       <div class="stat-card card-surface">
-        <div class="stat-title">Users</div>
+        <div class="stat-title">{{ $t('admin.dashboardStats.users') }}</div>
         <div class="stat-value">{{ stats?.usersTotal }}</div>
-        <div class="muted">Albums: {{ stats?.albumsTotal }} | Photos: {{ stats?.photosTotal }}</div>
+        <div class="muted">{{ $t('admin.dashboardStats.albums') }}: {{ stats?.albumsTotal }} | {{ $t('admin.dashboardStats.photos') }}: {{ stats?.photosTotal }}</div>
       </div>
     </div>
     <div class="panel-grid">
       <div class="panel card-surface">
-        <div class="section-title">Recent Articles</div>
+        <div class="section-title">{{ $t('admin.recentArticles') }}</div>
         <div v-for="article in stats?.recentArticles || []" :key="article.id" class="panel-row">
           <span>{{ article.title }}</span>
           <span class="muted">{{ article.status }}</span>
         </div>
       </div>
       <div class="panel card-surface">
-        <div class="section-title">Recent Comments</div>
+        <div class="section-title">{{ $t('admin.recentComments') }}</div>
         <div v-for="comment in stats?.recentComments || []" :key="comment.id" class="panel-row">
           <span>{{ comment.content }}</span>
           <span class="muted">{{ comment.status }}</span>
         </div>
       </div>
       <div class="panel card-surface">
-        <div class="section-title">Audit Trail</div>
+        <div class="section-title">{{ $t('admin.auditTrail') }}</div>
         <div v-for="log in stats?.recentAudits || []" :key="log.id" class="panel-row">
           <span>{{ log.action }}</span>
           <span class="muted">{{ log.createdAt?.slice(0, 16).replace('T', ' ') }}</span>

@@ -32,118 +32,118 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Branding" name="branding">
+      <el-tab-pane :label="$t('settings.branding')" name="branding">
         <div class="card-surface panel">
           <div class="upload-row">
-            <span>Logo</span>
+            <span>{{ $t('settings.logo') }}</span>
             <input type="file" @change="uploadAsset($event, 'logo')" />
           </div>
           <div class="upload-row">
-            <span>Favicon</span>
+            <span>{{ $t('settings.favicon') }}</span>
             <input type="file" @change="uploadAsset($event, 'favicon')" />
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="RSS" name="rss">
+      <el-tab-pane :label="$t('settings.rss')" name="rss">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="Public RSS">
+            <el-form-item :label="$t('settings.publicRss')">
               <el-switch v-model="rss.publicEnabled" />
             </el-form-item>
-            <el-form-item label="Private RSS">
+            <el-form-item :label="$t('settings.privateRss')">
               <el-switch v-model="rss.privateEnabled" />
             </el-form-item>
-            <el-form-item label="Full Content">
+            <el-form-item :label="$t('settings.fullContent')">
               <el-switch v-model="rss.fullContent" />
             </el-form-item>
-            <el-form-item label="Token days">
+            <el-form-item :label="$t('settings.tokenDays')">
               <el-input-number v-model="rss.tokenDays" :min="1" />
             </el-form-item>
-            <el-button type="primary" @click="saveRss">Save RSS</el-button>
+            <el-button type="primary" @click="saveRss">{{ $t('settings.saveRss') }}</el-button>
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Comments" name="comments">
+      <el-tab-pane :label="$t('settings.comments')" name="comments">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="Allow guest comments">
+            <el-form-item :label="$t('settings.allowGuestComment')">
               <el-switch v-model="comments.allowGuest" />
             </el-form-item>
-            <el-form-item label="Review mode">
+            <el-form-item :label="$t('settings.reviewMode')">
               <el-select v-model="comments.reviewMode">
-                <el-option label="None" value="" />
-                <el-option label="First" value="FIRST" />
-                <el-option label="All" value="ALL" />
+                <el-option :label="$t('settings.reviewModeOptions.none')" value="" />
+                <el-option :label="$t('settings.reviewModeOptions.first')" value="FIRST" />
+                <el-option :label="$t('settings.reviewModeOptions.all')" value="ALL" />
               </el-select>
             </el-form-item>
-            <el-form-item label="Rate limit (per minute)">
+            <el-form-item :label="$t('settings.rateLimit')">
               <el-input-number v-model="comments.rateLimit" :min="1" />
             </el-form-item>
-            <el-form-item label="Sensitive words (comma separated)">
+            <el-form-item :label="$t('settings.sensitiveWords')">
               <el-input v-model="comments.sensitiveWords" />
             </el-form-item>
-            <el-form-item label="Sensitive strategy">
+            <el-form-item :label="$t('settings.sensitiveStrategy')">
               <el-select v-model="comments.sensitiveStrategy">
-                <el-option label="Pending" value="PENDING" />
-                <el-option label="Reject" value="REJECT" />
+                <el-option :label="$t('settings.sensitiveStrategyOptions.pending')" value="PENDING" />
+                <el-option :label="$t('settings.sensitiveStrategyOptions.reject')" value="REJECT" />
               </el-select>
             </el-form-item>
-            <el-button type="primary" @click="saveComments">Save Comments</el-button>
+            <el-button type="primary" @click="saveComments">{{ $t('settings.saveComments') }}</el-button>
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Access" name="access">
+      <el-tab-pane :label="$t('settings.access')" name="access">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="Allow user posting">
+            <el-form-item :label="$t('settings.allowUserPost')">
               <el-switch v-model="access.allowUserPost" />
             </el-form-item>
-            <el-form-item label="Allow user albums">
+            <el-form-item :label="$t('settings.allowUserAlbum')">
               <el-switch v-model="access.allowUserAlbum" />
             </el-form-item>
-            <el-form-item label="Admin can view private">
+            <el-form-item :label="$t('settings.adminCanViewPrivate')">
               <el-switch v-model="access.adminCanViewPrivate" />
             </el-form-item>
-            <el-button type="primary" @click="saveAccess">Save Access</el-button>
+            <el-button type="primary" @click="saveAccess">{{ $t('settings.saveAccess') }}</el-button>
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Custom Code" name="code">
+      <el-tab-pane :label="$t('settings.customCode')" name="code">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="Enable custom JS">
+            <el-form-item :label="$t('settings.enableCustomJs')">
               <el-switch v-model="custom.enableJs" />
             </el-form-item>
-            <el-form-item label="Custom CSS">
+            <el-form-item :label="$t('settings.customCss')">
               <el-input v-model="custom.cssContent" type="textarea" :rows="6" />
             </el-form-item>
-            <el-form-item label="Custom JS">
+            <el-form-item :label="$t('settings.customJs')">
               <el-input v-model="custom.jsContent" type="textarea" :rows="6" />
             </el-form-item>
-            <el-button type="primary" @click="saveCustomCode">Save Custom Code</el-button>
+            <el-button type="primary" @click="saveCustomCode">{{ $t('settings.saveCustomCode') }}</el-button>
           </el-form>
           <el-divider />
           <div class="history-grid">
             <div>
-              <div class="section-title">CSS Versions</div>
+              <div class="section-title">{{ $t('settings.cssVersions') }}</div>
               <el-table :data="cssVersions" size="small">
                 <el-table-column prop="id" label="ID" width="80" />
-                <el-table-column prop="createdAt" label="Created" />
-                <el-table-column label="Actions" width="120">
+                <el-table-column prop="createdAt" :label="$t('admin.columns.created')" />
+                <el-table-column :label="$t('admin.columns.actions')" width="120">
                   <template #default="{ row }">
-                    <el-button size="small" @click="activateCustom(row.id, 'CSS')">Activate</el-button>
+                    <el-button size="small" @click="activateCustom(row.id, 'CSS')">{{ $t('settings.activate') }}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
             </div>
             <div>
-              <div class="section-title">JS Versions</div>
+              <div class="section-title">{{ $t('settings.jsVersions') }}</div>
               <el-table :data="jsVersions" size="small">
                 <el-table-column prop="id" label="ID" width="80" />
-                <el-table-column prop="createdAt" label="Created" />
-                <el-table-column label="Actions" width="120">
+                <el-table-column prop="createdAt" :label="$t('admin.columns.created')" />
+                <el-table-column :label="$t('admin.columns.actions')" width="120">
                   <template #default="{ row }">
-                    <el-button size="small" @click="activateCustom(row.id, 'JS')">Activate</el-button>
+                    <el-button size="small" @click="activateCustom(row.id, 'JS')">{{ $t('settings.activate') }}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -151,52 +151,52 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Media" name="media">
+      <el-tab-pane :label="$t('settings.media')" name="media">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="EXIF enabled">
+            <el-form-item :label="$t('settings.exifEnabled')">
               <el-switch v-model="media.exifEnabled" />
             </el-form-item>
-            <el-form-item label="Strip geo location">
+            <el-form-item :label="$t('settings.stripExifGeo')">
               <el-switch v-model="media.stripExifGeo" />
             </el-form-item>
-            <el-button type="primary" @click="saveMedia">Save Media</el-button>
+            <el-button type="primary" @click="saveMedia">{{ $t('settings.saveMedia') }}</el-button>
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Git Sync" name="git">
+      <el-tab-pane :label="$t('settings.gitSync')" name="git">
         <div class="card-surface panel">
           <el-form label-position="top">
-            <el-form-item label="Provider">
+            <el-form-item :label="$t('settings.gitProvider')">
               <el-select v-model="git.provider">
                 <el-option label="GitHub" value="GITHUB" />
                 <el-option label="Gitee" value="GITEE" />
               </el-select>
             </el-form-item>
-            <el-form-item label="Repo (owner/name)">
+            <el-form-item :label="$t('settings.gitRepo')">
               <el-input v-model="git.repo" />
             </el-form-item>
-            <el-form-item label="Branch">
+            <el-form-item :label="$t('settings.gitBranch')">
               <el-input v-model="git.branch" />
             </el-form-item>
-            <el-form-item label="Token">
+            <el-form-item :label="$t('settings.gitToken')">
               <el-input v-model="git.token" type="password" />
             </el-form-item>
-            <el-form-item label="Path prefix">
+            <el-form-item :label="$t('settings.gitPathPrefix')">
               <el-input v-model="git.pathPrefix" placeholder="/images/" />
             </el-form-item>
-            <el-form-item label="Commit message">
+            <el-form-item :label="$t('settings.gitCommitMessage')">
               <el-input v-model="git.commitMessage" />
             </el-form-item>
-            <el-form-item label="Date partition">
+            <el-form-item :label="$t('settings.gitDatePartition')">
               <el-switch v-model="git.datePartition" />
             </el-form-item>
-            <el-form-item label="Overwrite">
+            <el-form-item :label="$t('settings.gitOverwrite')">
               <el-switch v-model="git.overwrite" />
             </el-form-item>
             <div class="git-actions">
-              <el-button type="primary" @click="saveGit">Save Git Settings</el-button>
-              <el-button @click="testGit">Test Connection</el-button>
+              <el-button type="primary" @click="saveGit">{{ $t('settings.saveGit') }}</el-button>
+              <el-button @click="testGit">{{ $t('settings.testConnection') }}</el-button>
             </div>
           </el-form>
         </div>
@@ -208,9 +208,11 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { CustomCodeVersion } from '@/api/types'
 
+const { t } = useI18n()
 const activeTab = ref('site')
 const settings = reactive<Record<string, string>>({})
 const cssVersions = ref<CustomCodeVersion[]>([])
@@ -327,9 +329,9 @@ const saveSetting = async (key: string, value: string) => {
 const saveSection = async (keys: string[]) => {
   try {
     await Promise.all(keys.map((key) => saveSetting(key, settings[key] || '')))
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
@@ -339,9 +341,9 @@ const saveRss = async () => {
     await saveSetting('rss_private_enabled', String(rss.privateEnabled))
     await saveSetting('rss_full_content', String(rss.fullContent))
     await saveSetting('rss_token_days', String(rss.tokenDays))
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
@@ -352,9 +354,9 @@ const saveComments = async () => {
     await saveSetting('comment_rate_limit', String(comments.rateLimit))
     await saveSetting('sensitive_words', comments.sensitiveWords)
     await saveSetting('sensitive_strategy', comments.sensitiveStrategy)
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
@@ -363,9 +365,9 @@ const saveAccess = async () => {
     await saveSetting('allow_user_post', String(access.allowUserPost))
     await saveSetting('allow_user_album', String(access.allowUserAlbum))
     await saveSetting('admin_can_view_private', String(access.adminCanViewPrivate))
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
@@ -378,10 +380,10 @@ const saveCustomCode = async () => {
     if (custom.jsContent.trim()) {
       await api.post('/api/admin/settings/custom-code', { type: 'JS', content: custom.jsContent, enabled: true })
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
     await loadCustomCode()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
@@ -400,7 +402,7 @@ const loadCustomCode = async () => {
 
 const activateCustom = async (id: number, type: string) => {
   await api.post(`/api/admin/settings/custom-code/${id}/activate`, null, { params: { type } })
-  ElMessage.success('Activated')
+  ElMessage.success(t('admin.messages.activated'))
   await loadCustomCode()
 }
 
@@ -408,9 +410,9 @@ const saveMedia = async () => {
   try {
     await saveSetting('exif_enabled', String(media.exifEnabled))
     await saveSetting('strip_exif_geo', String(media.stripExifGeo))
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
@@ -424,18 +426,18 @@ const saveGit = async () => {
     await saveSetting('git_commit_message', git.commitMessage)
     await saveSetting('git_date_partition', String(git.datePartition))
     await saveSetting('git_overwrite', String(git.overwrite))
-    ElMessage.success('Saved')
+    ElMessage.success(t('settings.saved'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('settings.saveFailed'))
   }
 }
 
 const testGit = async () => {
   try {
     await api.post('/api/admin/albums/git/test')
-    ElMessage.success('Connection OK')
+    ElMessage.success(t('settings.connectionOk'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Test failed')
+    ElMessage.error(err?.message || t('admin.messages.testFailed'))
   }
 }
 
@@ -452,9 +454,9 @@ const uploadAsset = async (event: Event, type: 'logo' | 'favicon') => {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     await saveSetting(type === 'logo' ? 'site_logo' : 'site_favicon', url)
-    ElMessage.success('Uploaded')
+    ElMessage.success(t('settings.uploaded'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Upload failed')
+    ElMessage.error(err?.message || t('settings.uploadFailed'))
   } finally {
     target.value = ''
   }

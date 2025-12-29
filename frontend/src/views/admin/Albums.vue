@@ -1,44 +1,44 @@
 <template>
   <section class="admin-section">
     <div class="toolbar card-surface">
-      <el-button type="primary" @click="openCreate">New Album</el-button>
-      <el-button @click="testGit">Test Git Connection</el-button>
+      <el-button type="primary" @click="openCreate">{{ $t('admin.newAlbum') }}</el-button>
+      <el-button @click="testGit">{{ $t('admin.testGitConnection') }}</el-button>
     </div>
     <el-table :data="albums" stripe>
-      <el-table-column prop="title" label="Title" min-width="200" />
-      <el-table-column prop="visibility" label="Visibility" width="140" />
-      <el-table-column prop="updatedAt" label="Updated" width="160" />
-      <el-table-column label="Actions" width="240">
+      <el-table-column prop="title" :label="$t('admin.columns.title')" min-width="200" />
+      <el-table-column prop="visibility" :label="$t('admin.columns.visibility')" width="140" />
+      <el-table-column prop="updatedAt" :label="$t('admin.columns.updated')" width="160" />
+      <el-table-column :label="$t('admin.columns.actions')" width="240">
         <template #default="{ row }">
-          <el-button size="small" @click="openEdit(row)">Edit</el-button>
-          <el-button size="small" @click="manageAlbum(row)">Manage</el-button>
-          <el-button size="small" type="danger" @click="deleteAlbum(row)">Delete</el-button>
+          <el-button size="small" @click="openEdit(row)">{{ $t('admin.actions.edit') }}</el-button>
+          <el-button size="small" @click="manageAlbum(row)">{{ $t('admin.actions.manage') }}</el-button>
+          <el-button size="small" type="danger" @click="deleteAlbum(row)">{{ $t('admin.actions.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="showEditor" width="520px" :title="editingAlbum ? 'Edit Album' : 'New Album'">
+    <el-dialog v-model="showEditor" width="520px" :title="editingAlbum ? $t('admin.dialogs.editAlbum') : $t('admin.dialogs.newAlbum')">
       <el-form :model="albumForm" label-position="top">
-        <el-form-item label="Title">
+        <el-form-item :label="$t('admin.columns.title')">
           <el-input v-model="albumForm.title" />
         </el-form-item>
-        <el-form-item label="Description">
+        <el-form-item :label="$t('admin.labels.description')">
           <el-input v-model="albumForm.description" type="textarea" :rows="3" />
         </el-form-item>
-        <el-form-item label="Visibility">
+        <el-form-item :label="$t('admin.labels.visibility')">
           <el-select v-model="albumForm.visibility">
-            <el-option v-for="option in visibilityOptions" :key="option" :label="option" :value="option" />
+            <el-option v-for="option in visibilityOptions" :key="option" :label="getVisibilityLabel(option)" :value="option" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="albumForm.visibility === 'WHITELIST'" label="Whitelist users">
+        <el-form-item v-if="albumForm.visibility === 'WHITELIST'" :label="$t('admin.labels.whitelistUsers')">
           <el-select v-model="albumForm.whitelistUserIds" multiple filterable>
             <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
           </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showEditor = false">Cancel</el-button>
-        <el-button type="primary" @click="saveAlbum">Save</el-button>
+        <el-button @click="showEditor = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="saveAlbum">{{ $t('common.save') }}</el-button>
       </template>
     </el-dialog>
   </section>
@@ -48,9 +48,11 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { Album, User } from '@/api/types'
 
+const { t } = useI18n()
 const router = useRouter()
 const albums = ref<Album[]>([])
 const users = ref<User[]>([])
@@ -65,6 +67,17 @@ const albumForm = reactive({
 })
 
 const visibilityOptions = ['PUBLIC', 'LOGIN_ONLY', 'WHITELIST', 'PRIVATE', 'ADMIN_ONLY']
+
+const getVisibilityLabel = (option: string) => {
+  const map: Record<string, string> = {
+    PUBLIC: t('admin.visibilityOptions.public'),
+    LOGIN_ONLY: t('admin.visibilityOptions.loginOnly'),
+    WHITELIST: t('admin.visibilityOptions.whitelist'),
+    PRIVATE: t('admin.visibilityOptions.private'),
+    ADMIN_ONLY: t('admin.visibilityOptions.adminOnly'),
+  }
+  return map[option] || option
+}
 
 const loadAlbums = async () => {
   albums.value = await api.get<Album[]>('/api/admin/albums')
@@ -99,33 +112,33 @@ const saveAlbum = async () => {
     } else {
       await api.post('/api/admin/albums', albumForm)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     showEditor.value = false
     await loadAlbums()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 
 const manageAlbum = (album: Album) => router.push(`/admin/albums/${album.id}`)
 
 const deleteAlbum = async (album: Album) => {
-  await ElMessageBox.confirm('Delete this album?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteAlbum'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/albums/${album.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadAlbums()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 
 const testGit = async () => {
   try {
     await api.post('/api/admin/albums/git/test')
-    ElMessage.success('Connection OK')
+    ElMessage.success(t('admin.messages.connectionOk'))
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Test failed')
+    ElMessage.error(err?.message || t('admin.messages.testFailed'))
   }
 }
 

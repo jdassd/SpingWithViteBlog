@@ -3,31 +3,31 @@
     <div class="card-surface editor-card">
       <div class="editor-head">
         <div>
-          <span class="subtle-tag">Page</span>
-          <h1 class="serif">{{ isEdit ? 'Edit Page' : 'New Page' }}</h1>
+          <span class="subtle-tag">{{ $t('admin.editor.page') }}</span>
+          <h1 class="serif">{{ isEdit ? $t('admin.editor.editPage') : $t('admin.editor.newPage') }}</h1>
         </div>
         <div class="editor-actions">
-          <el-button @click="goBack">Cancel</el-button>
-          <el-button type="primary" @click="savePage">{{ isEdit ? 'Update' : 'Create' }}</el-button>
+          <el-button @click="goBack">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="savePage">{{ isEdit ? $t('admin.actions.update') : $t('admin.actions.create') }}</el-button>
         </div>
       </div>
       <el-form :model="form" label-position="top">
-        <el-form-item label="Title">
+        <el-form-item :label="$t('admin.columns.title')">
           <el-input v-model="form.title" />
         </el-form-item>
-        <el-form-item label="Slug">
+        <el-form-item :label="$t('admin.columns.slug')">
           <el-input v-model="form.slug" />
         </el-form-item>
-        <el-form-item label="External URL">
+        <el-form-item :label="$t('admin.labels.externalUrl')">
           <el-input v-model="form.externalUrl" placeholder="https://..." />
         </el-form-item>
-        <el-form-item v-if="!form.externalUrl" label="Content Type">
+        <el-form-item v-if="!form.externalUrl" :label="$t('admin.labels.contentType')">
           <el-radio-group v-model="form.contentType">
-            <el-radio-button label="MARKDOWN">Markdown</el-radio-button>
-            <el-radio-button label="RICH_TEXT">Rich Text</el-radio-button>
+            <el-radio-button label="MARKDOWN">{{ $t('admin.labels.markdown') }}</el-radio-button>
+            <el-radio-button label="RICH_TEXT">{{ $t('admin.labels.richText') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="!form.externalUrl" label="Content">
+        <el-form-item v-if="!form.externalUrl" :label="$t('admin.editor.content')">
           <div v-if="form.contentType === 'MARKDOWN'" class="editor-split">
             <el-input v-model="form.contentRaw" type="textarea" :autosize="{ minRows: 20, maxRows: 60 }" />
             <div class="preview" v-html="renderedMarkdown"></div>
@@ -37,23 +37,23 @@
           </div>
         </el-form-item>
         <div class="form-grid">
-          <el-form-item label="Visibility">
+          <el-form-item :label="$t('admin.labels.visibility')">
             <el-select v-model="form.visibility">
-              <el-option label="Public" value="PUBLIC" />
-              <el-option label="Login only" value="LOGIN_ONLY" />
-              <el-option label="Whitelist" value="WHITELIST" />
-              <el-option label="Private" value="PRIVATE" />
-              <el-option label="Admin only" value="ADMIN_ONLY" />
+              <el-option :label="$t('admin.visibilityOptions.public')" value="PUBLIC" />
+              <el-option :label="$t('admin.visibilityOptions.loginOnly')" value="LOGIN_ONLY" />
+              <el-option :label="$t('admin.visibilityOptions.whitelist')" value="WHITELIST" />
+              <el-option :label="$t('admin.visibilityOptions.private')" value="PRIVATE" />
+              <el-option :label="$t('admin.visibilityOptions.adminOnly')" value="ADMIN_ONLY" />
             </el-select>
           </el-form-item>
-          <el-form-item label="Show in Navigation">
+          <el-form-item :label="$t('admin.labels.showInNav')">
             <el-switch v-model="form.isNav" />
           </el-form-item>
-          <el-form-item label="Sort Order">
+          <el-form-item :label="$t('admin.labels.sortOrder')">
             <el-input-number v-model="form.sortOrder" :min="0" />
           </el-form-item>
         </div>
-        <el-form-item v-if="form.visibility === 'WHITELIST'" label="Whitelist users">
+        <el-form-item v-if="form.visibility === 'WHITELIST'" :label="$t('admin.labels.whitelistUsers')">
           <el-select v-model="form.whitelistUserIds" multiple filterable>
             <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id" />
           </el-select>
@@ -67,12 +67,14 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { marked } from 'marked'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import api from '@/api/client'
 import type { Page, User } from '@/api/types'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const isEdit = computed(() => !!route.params.id)
@@ -115,7 +117,7 @@ const loadPage = async () => {
 
 const savePage = async () => {
   if (!form.title.trim() || !form.slug.trim()) {
-    ElMessage.warning('Title and slug required')
+    ElMessage.warning(t('admin.messages.titleSlugRequired'))
     return
   }
   const payload = { ...form }
@@ -125,10 +127,10 @@ const savePage = async () => {
     } else {
       await api.post('/api/admin/pages', payload)
     }
-    ElMessage.success('Saved')
+    ElMessage.success(t('admin.messages.saved'))
     router.push('/admin/pages')
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Save failed')
+    ElMessage.error(err?.message || t('admin.messages.saveFailed'))
   }
 }
 

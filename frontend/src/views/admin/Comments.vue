@@ -1,24 +1,24 @@
 <template>
   <section class="admin-section">
     <div class="toolbar card-surface">
-      <el-input v-model="filters.articleId" placeholder="Article ID" />
-      <el-select v-model="filters.status" placeholder="Status" clearable>
-        <el-option label="Published" value="PUBLISHED" />
-        <el-option label="Pending" value="PENDING" />
-        <el-option label="Blocked" value="BLOCKED" />
+      <el-input v-model="filters.articleId" :placeholder="$t('admin.labels.articleId')" />
+      <el-select v-model="filters.status" :placeholder="$t('admin.columns.status')" clearable>
+        <el-option :label="$t('admin.statusOptions.published')" value="PUBLISHED" />
+        <el-option :label="$t('admin.statusOptions.pending')" value="PENDING" />
+        <el-option :label="$t('admin.statusOptions.blocked')" value="BLOCKED" />
       </el-select>
-      <el-button type="primary" @click="loadComments">Filter</el-button>
+      <el-button type="primary" @click="loadComments">{{ $t('admin.filter') }}</el-button>
     </div>
     <el-table :data="comments" stripe>
-      <el-table-column prop="content" label="Content" min-width="220" />
-      <el-table-column prop="articleId" label="Article" width="120" />
-      <el-table-column prop="status" label="Status" width="120" />
-      <el-table-column prop="createdAt" label="Created" width="170" />
-      <el-table-column label="Actions" width="220">
+      <el-table-column prop="content" :label="$t('admin.columns.content')" min-width="220" />
+      <el-table-column prop="articleId" :label="$t('admin.columns.article')" width="120" />
+      <el-table-column prop="status" :label="$t('admin.columns.status')" width="120" />
+      <el-table-column prop="createdAt" :label="$t('admin.columns.created')" width="170" />
+      <el-table-column :label="$t('admin.columns.actions')" width="220">
         <template #default="{ row }">
-          <el-button size="small" @click="updateStatus(row, 'PUBLISHED')">Approve</el-button>
-          <el-button size="small" @click="updateStatus(row, 'BLOCKED')">Block</el-button>
-          <el-button size="small" type="danger" @click="deleteComment(row)">Delete</el-button>
+          <el-button size="small" @click="updateStatus(row, 'PUBLISHED')">{{ $t('admin.actions.approve') }}</el-button>
+          <el-button size="small" @click="updateStatus(row, 'BLOCKED')">{{ $t('admin.actions.block') }}</el-button>
+          <el-button size="small" type="danger" @click="deleteComment(row)">{{ $t('admin.actions.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -28,9 +28,11 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import api from '@/api/client'
 import type { Comment } from '@/api/types'
 
+const { t } = useI18n()
 const comments = ref<Comment[]>([])
 const filters = reactive({
   articleId: '',
@@ -51,21 +53,21 @@ const loadComments = async () => {
 const updateStatus = async (comment: Comment, status: string) => {
   try {
     await api.patch(`/api/admin/comments/${comment.id}/status`, { status })
-    ElMessage.success('Updated')
+    ElMessage.success(t('admin.messages.updated'))
     await loadComments()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Update failed')
+    ElMessage.error(err?.message || t('admin.messages.updateFailed'))
   }
 }
 
 const deleteComment = async (comment: Comment) => {
-  await ElMessageBox.confirm('Delete this comment?', 'Confirm', { type: 'warning' })
+  await ElMessageBox.confirm(t('admin.confirms.deleteComment'), t('admin.confirms.confirm'), { type: 'warning' })
   try {
     await api.delete(`/api/admin/comments/${comment.id}`)
-    ElMessage.success('Deleted')
+    ElMessage.success(t('admin.messages.deleted'))
     await loadComments()
   } catch (err: any) {
-    ElMessage.error(err?.message || 'Delete failed')
+    ElMessage.error(err?.message || t('admin.messages.deleteFailed'))
   }
 }
 

@@ -1,18 +1,18 @@
 <template>
   <section class="admin-section">
     <div class="toolbar card-surface">
-      <el-input v-model="filters.userId" placeholder="User ID" />
-      <el-input v-model="filters.action" placeholder="Action" />
-      <el-button type="primary" @click="loadLogs">Filter</el-button>
+      <el-input v-model="filters.userId" :placeholder="$t('admin.labels.userId')" />
+      <el-input v-model="filters.action" :placeholder="$t('admin.columns.action')" />
+      <el-button type="primary" @click="loadLogs">{{ $t('admin.filter') }}</el-button>
     </div>
     <el-table :data="logs" stripe>
-      <el-table-column prop="createdAt" label="Time" width="180" />
-      <el-table-column prop="userId" label="User" width="100" />
-      <el-table-column prop="action" label="Action" width="200" />
-      <el-table-column prop="resourceType" label="Resource" width="120" />
-      <el-table-column prop="resourceId" label="ID" width="120" />
-      <el-table-column prop="result" label="Result" width="120" />
-      <el-table-column prop="message" label="Message" min-width="180" />
+      <el-table-column prop="createdAt" :label="$t('admin.columns.time')" width="180" />
+      <el-table-column prop="userId" :label="$t('admin.columns.user')" width="100" />
+      <el-table-column prop="action" :label="$t('admin.columns.action')" width="200" />
+      <el-table-column prop="resourceType" :label="$t('admin.columns.resource')" width="120" />
+      <el-table-column prop="resourceId" :label="$t('admin.columns.id')" width="120" />
+      <el-table-column prop="result" :label="$t('admin.columns.result')" width="120" />
+      <el-table-column prop="message" :label="$t('admin.columns.message')" min-width="180" />
     </el-table>
   </section>
 </template>

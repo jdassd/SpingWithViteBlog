@@ -1,0 +1,261 @@
+﻿CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(64) NOT NULL UNIQUE,
+  email VARCHAR(128) UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(16) NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  is_default_admin BOOLEAN NOT NULL DEFAULT FALSE,
+  failed_login_count INT NOT NULL DEFAULT 0,
+  locked_until TIMESTAMP NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_login_at TIMESTAMP NULL
+);
+
+CREATE TABLE refresh_tokens (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  token_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  revoked_at TIMESTAMP NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_refresh_tokens_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE rss_tokens (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  token_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  revoked_at TIMESTAMP NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_rss_tokens_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE categories (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(64) NOT NULL UNIQUE,
+  slug VARCHAR(64) NOT NULL UNIQUE
+);
+
+CREATE TABLE tags (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(64) NOT NULL UNIQUE,
+  slug VARCHAR(64) NOT NULL UNIQUE
+);
+
+CREATE TABLE articles (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  author_id BIGINT NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  content_type VARCHAR(16) NOT NULL,
+  content_raw CLOB NOT NULL,
+  content_html CLOB,
+  summary CLOB,
+  cover_url VARCHAR(512),
+  status VARCHAR(16) NOT NULL,
+  visibility VARCHAR(16) NOT NULL,
+  rss_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  allow_index BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  published_at TIMESTAMP NULL,
+  CONSTRAINT fk_articles_author FOREIGN KEY (author_id) REFERENCES users(id)
+);
+
+CREATE TABLE article_categories (
+  article_id BIGINT NOT NULL,
+  category_id BIGINT NOT NULL,
+  PRIMARY KEY (article_id, category_id),
+  CONSTRAINT fk_article_categories_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_categories_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE article_tags (
+  article_id BIGINT NOT NULL,
+  tag_id BIGINT NOT NULL,
+  PRIMARY KEY (article_id, tag_id),
+  CONSTRAINT fk_article_tags_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_tags_tag FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+);
+
+CREATE TABLE article_whitelist (
+  article_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (article_id, user_id),
+  CONSTRAINT fk_article_whitelist_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+  CONSTRAINT fk_article_whitelist_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE pages (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  slug VARCHAR(200) NOT NULL UNIQUE,
+  content_type VARCHAR(16) NOT NULL,
+  content_raw CLOB,
+  content_html CLOB,
+  visibility VARCHAR(16) NOT NULL,
+  is_nav BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INT NOT NULL DEFAULT 0,
+  external_url VARCHAR(512),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE page_whitelist (
+  page_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (page_id, user_id),
+  CONSTRAINT fk_page_whitelist_page FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE,
+  CONSTRAINT fk_page_whitelist_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE navigation_groups (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE navigation_links (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  group_id BIGINT,
+  name VARCHAR(100) NOT NULL,
+  url VARCHAR(512) NOT NULL,
+  icon VARCHAR(255),
+  description VARCHAR(512),
+  open_in_new BOOLEAN NOT NULL DEFAULT FALSE,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_nav_links_group FOREIGN KEY (group_id) REFERENCES navigation_groups(id) ON DELETE SET NULL
+);
+
+CREATE TABLE search_engines (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(64) NOT NULL,
+  query_url VARCHAR(512) NOT NULL,
+  enabled BOOLEAN NOT NULL DEFAULT TRUE,
+  is_default BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE albums (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  description CLOB,
+  cover_photo_id BIGINT,
+  owner_id BIGINT NOT NULL,
+  visibility VARCHAR(16) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_albums_owner FOREIGN KEY (owner_id) REFERENCES users(id)
+);
+
+CREATE TABLE album_whitelist (
+  album_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (album_id, user_id),
+  CONSTRAINT fk_album_whitelist_album FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE,
+  CONSTRAINT fk_album_whitelist_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE photos (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  album_id BIGINT NOT NULL,
+  filename VARCHAR(255) NOT NULL,
+  original_path VARCHAR(512) NOT NULL,
+  thumbnail_path VARCHAR(512),
+  external_url VARCHAR(512),
+  sync_status VARCHAR(16) NOT NULL DEFAULT 'LOCAL',
+  sync_error VARCHAR(512),
+  exif_json CLOB,
+  taken_at TIMESTAMP NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_photos_album FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
+);
+
+CREATE TABLE photo_tags (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(64) NOT NULL UNIQUE,
+  slug VARCHAR(64) NOT NULL UNIQUE
+);
+
+CREATE TABLE photo_tag_relations (
+  photo_id BIGINT NOT NULL,
+  tag_id BIGINT NOT NULL,
+  PRIMARY KEY (photo_id, tag_id),
+  CONSTRAINT fk_photo_tag_rel_photo FOREIGN KEY (photo_id) REFERENCES photos(id) ON DELETE CASCADE,
+  CONSTRAINT fk_photo_tag_rel_tag FOREIGN KEY (tag_id) REFERENCES photo_tags(id) ON DELETE CASCADE
+);
+
+CREATE TABLE comments (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  article_id BIGINT NOT NULL,
+  user_id BIGINT,
+  parent_id BIGINT,
+  guest_name VARCHAR(64),
+  guest_email VARCHAR(128),
+  content CLOB NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_comments_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+  CONSTRAINT fk_comments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+  CONSTRAINT fk_comments_parent FOREIGN KEY (parent_id) REFERENCES comments(id) ON DELETE CASCADE
+);
+
+CREATE TABLE themes (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  version VARCHAR(32) NOT NULL,
+  author VARCHAR(100),
+  description VARCHAR(512),
+  storage_path VARCHAR(512) NOT NULL,
+  theme_json CLOB NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT FALSE,
+  config_json CLOB,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE custom_code_versions (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  type VARCHAR(8) NOT NULL,
+  content CLOB NOT NULL,
+  enabled BOOLEAN NOT NULL DEFAULT TRUE,
+  created_by BIGINT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_active BOOLEAN NOT NULL DEFAULT FALSE,
+  CONSTRAINT fk_custom_code_versions_user FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE site_settings (
+  setting_key VARCHAR(100) PRIMARY KEY,
+  setting_value CLOB,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE audit_logs (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT,
+  action VARCHAR(64) NOT NULL,
+  resource_type VARCHAR(64),
+  resource_id VARCHAR(64),
+  result VARCHAR(16) NOT NULL,
+  message VARCHAR(512),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_audit_logs_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE rate_limits (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  rate_key VARCHAR(200) NOT NULL,
+  window_start TIMESTAMP NOT NULL,
+  count INT NOT NULL,
+  CONSTRAINT uk_rate_limits_key UNIQUE (rate_key)
+);

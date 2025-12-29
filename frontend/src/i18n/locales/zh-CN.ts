@@ -518,4 +518,103 @@ export default {
     copyright: '版权所有',
     builtWith: '基于 Spring + Vite 构建',
   },
+
+  // V2.0 新增翻译
+
+  // 菜单
+  menu: {
+    series: '系列管理',
+    analytics: '访问统计',
+    friendLinks: '友情链接',
+  },
+
+  // 系列
+  series: {
+    title: '专栏系列',
+    create: '新建系列',
+    edit: '编辑系列',
+    titleCol: '标题',
+    description: '描述',
+    coverUrl: '封面URL',
+    status: '状态',
+    ongoing: '连载中',
+    completed: '已完结',
+    sortOrder: '排序',
+    articleCount: '文章数',
+    articles: '篇文章',
+    articleList: '系列文章',
+    order: '序号',
+    manageArticles: '管理文章',
+    dragToReorder: '拖拽以调整顺序',
+    noSeries: '暂无系列',
+    notFound: '系列不存在',
+    noArticles: '暂无文章',
+  },
+
+  // 可见性
+  visibility: {
+    public: '公开',
+    login_only: '仅登录用户',
+    whitelist: '白名单',
+    admin_only: '仅管理员',
+  },
+
+  // 排行榜
+  ranking: {
+    title: '热门排行',
+    score: '热度',
+    noData: '暂无数据',
+  },
+
+  // 友情链接
+  friendLinks: {
+    title: '友情链接',
+    create: '添加链接',
+    edit: '编辑链接',
+    name: '名称',
+    url: 'URL',
+    description: '描述',
+    logoUrl: 'Logo URL',
+    category: '分类',
+    status: '状态',
+    enabled: '启用',
+    check: '检测',
+    checkAll: '批量检测',
+    noLinks: '暂无友链',
+  },
+
+  // 收藏夹
+  favorites: {
+    title: '我的收藏',
+    create: '创建收藏夹',
+    edit: '编辑收藏夹',
+    name: '名称',
+    description: '描述',
+    isPublic: '公开',
+    public: '公开',
+    default: '默认',
+    noFavorites: '暂无收藏夹',
+    noArticles: '暂无收藏的文章',
+  },
+
+  // 统计
+  analytics: {
+    todayPv: '今日PV',
+    todayUv: '今日UV',
+    yesterday: '昨日',
+    weekPv: '本周PV',
+    lastWeek: '上周',
+    monthPv: '本月PV',
+    lastMonth: '上月',
+    topArticles: '热门文章',
+    last7Days: '最近7天',
+    last30Days: '最近30天',
+    last90Days: '最近90天',
+    views: '浏览量',
+    rankingConfig: '排行权重配置',
+    viewWeight: '浏览权重',
+    likeWeight: '点赞权重',
+    commentWeight: '评论权重',
+    favoriteWeight: '收藏权重',
+  },
 }

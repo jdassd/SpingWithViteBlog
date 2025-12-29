@@ -198,3 +198,110 @@ export type DashboardStats = {
   recentComments: Comment[]
   recentAudits: AuditLog[]
 }
+
+// V2.0 新增类型
+
+export type Favorite = {
+  id: number
+  userId: number
+  name: string
+  description?: string
+  isPublic: boolean
+  isDefault: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export type FavoriteArticle = {
+  id: number
+  favoriteId: number
+  articleId: number
+  createdAt: string
+}
+
+export type Series = {
+  id: number
+  title: string
+  description?: string
+  coverUrl?: string
+  status: 'ONGOING' | 'COMPLETED'
+  visibility: string
+  sortOrder: number
+  articleCount?: number
+  createdAt: string
+  updatedAt: string
+  whitelistUserIds?: number[]
+}
+
+export type ArticleVersion = {
+  id: number
+  articleId: number
+  versionNumber: number
+  title: string
+  contentRaw: string
+  contentHtml?: string
+  createdAt: string
+}
+
+export type Analytics = {
+  todayPv: number
+  todayUv: number
+  yesterdayPv: number
+  yesterdayUv: number
+  weekPv: number
+  lastWeekPv: number
+  monthPv: number
+  lastMonthPv: number
+}
+
+export type RankingItem = {
+  articleId: number
+  title: string
+  coverUrl?: string
+  authorId: number
+  viewCount: number
+  likeCount: number
+  commentCount: number
+  favoriteCount: number
+  score: number
+}
+
+export type RankingConfig = {
+  viewWeight: number
+  likeWeight: number
+  commentWeight: number
+  favoriteWeight: number
+}
+
+export type FriendLink = {
+  id: number
+  name: string
+  url: string
+  description?: string
+  logoUrl?: string
+  category?: string
+  sortOrder: number
+  isEnabled: boolean
+  status: 'UNCHECKED' | 'OK' | 'FAILED'
+  lastCheckAt?: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type ArticleStats = {
+  viewCount: number
+  likeCount: number
+  favoriteCount: number
+  commentCount: number
+}
+
+export type LikeStatus = {
+  liked: boolean
+  count: number
+}
+
+export type FavoriteStatus = {
+  isFavorited: boolean
+  count: number
+}
+

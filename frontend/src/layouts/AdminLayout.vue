@@ -7,10 +7,13 @@
       <el-menu :default-active="activePath" class="menu" router>
         <el-menu-item index="/admin/dashboard">{{ $t('admin.dashboard') }}</el-menu-item>
         <el-menu-item index="/admin/articles">{{ $t('admin.articles') }}</el-menu-item>
+        <el-menu-item index="/admin/series">{{ $t('menu.series') }}</el-menu-item>
         <el-menu-item index="/admin/comments">{{ $t('admin.comments') }}</el-menu-item>
         <el-menu-item index="/admin/pages">{{ $t('admin.pages') }}</el-menu-item>
         <el-menu-item index="/admin/navigation">{{ $t('admin.navigation') }}</el-menu-item>
         <el-menu-item index="/admin/albums">{{ $t('admin.albums') }}</el-menu-item>
+        <el-menu-item index="/admin/friend-links">{{ $t('menu.friendLinks') }}</el-menu-item>
+        <el-menu-item index="/admin/analytics">{{ $t('menu.analytics') }}</el-menu-item>
         <el-menu-item index="/admin/themes">{{ $t('admin.themes') }}</el-menu-item>
         <el-menu-item index="/admin/settings">{{ $t('admin.settings') }}</el-menu-item>
         <el-menu-item index="/admin/users">{{ $t('admin.users') }}</el-menu-item>

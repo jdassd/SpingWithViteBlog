@@ -45,11 +45,14 @@ public interface PageMapper {
       "</script>"
   })
   List<Page> list(@Param("keyword") String keyword,
-                  @Param("visibility") Visibility visibility,
-                  @Param("isNav") Boolean isNav);
+      @Param("visibility") Visibility visibility,
+      @Param("isNav") Boolean isNav);
 
   @Select("SELECT * FROM pages WHERE is_nav = TRUE ORDER BY sort_order ASC, created_at DESC")
   List<Page> listNav();
+
+  @Select("SELECT * FROM pages WHERE is_nav = TRUE AND visibility = 'PUBLIC' ORDER BY sort_order ASC, created_at DESC")
+  List<Page> findPublicNav();
 
   @Delete("DELETE FROM pages WHERE id = #{id}")
   int delete(@Param("id") Long id);

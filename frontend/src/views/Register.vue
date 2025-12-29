@@ -59,10 +59,17 @@ const handleRegister = async () => {
 }
 
 .auth-card {
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
   padding: 28px;
   display: grid;
   gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 20px;
+  }
 }
 
 .full {

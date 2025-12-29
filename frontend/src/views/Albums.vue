@@ -87,4 +87,24 @@ onMounted(loadAlbums)
 .album-title {
   font-weight: 600;
 }
+
+@media (max-width: 640px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .cover {
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .album-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .album-hero {
+    padding: 18px;
+  }
+}
 </style>

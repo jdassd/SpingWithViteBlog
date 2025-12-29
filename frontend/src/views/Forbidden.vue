@@ -27,7 +27,14 @@ const goHome = () => router.push('/')
   padding: 24px;
   display: grid;
   gap: 12px;
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
   text-align: center;
+}
+
+@media (max-width: 480px) {
+  .state-card {
+    padding: 20px;
+  }
 }
 </style>

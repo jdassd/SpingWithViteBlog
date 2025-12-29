@@ -251,4 +251,42 @@ onMounted(async () => {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .detail-title {
+    font-size: 26px;
+  }
+
+  .detail-card {
+    padding: 18px;
+  }
+
+  .comment-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-title {
+    font-size: 22px;
+  }
+
+  .detail-meta {
+    flex-wrap: wrap;
+  }
+
+  .detail-tags {
+    flex-wrap: wrap;
+  }
+
+  .comment-actions {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .comment-buttons {
+    justify-content: flex-end;
+  }
+}
 </style>

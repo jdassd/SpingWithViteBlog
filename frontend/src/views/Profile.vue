@@ -54,7 +54,8 @@ const submit = async () => {
 }
 
 .profile-card {
-  width: 520px;
+  width: 100%;
+  max-width: 520px;
   padding: 24px;
   display: grid;
   gap: 16px;
@@ -63,5 +64,11 @@ const submit = async () => {
 .profile-info {
   display: grid;
   gap: 6px;
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 18px;
+  }
 }
 </style>

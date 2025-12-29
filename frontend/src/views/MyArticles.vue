@@ -9,18 +9,20 @@
         <el-button type="primary" @click="newArticle">{{ $t('myArticle.newArticle') }}</el-button>
       </div>
     </div>
-    <el-table :data="articles" stripe>
-      <el-table-column prop="title" :label="$t('common.title')" min-width="220" />
-      <el-table-column prop="status" :label="$t('common.status')" width="120" />
-      <el-table-column prop="visibility" :label="$t('myArticle.visibility')" width="140" />
-      <el-table-column prop="createdAt" :label="$t('common.created')" width="160" />
-      <el-table-column :label="$t('common.actions')" width="180">
-        <template #default="{ row }">
-          <el-button size="small" @click="editArticle(row)">{{ $t('common.edit') }}</el-button>
-          <el-button size="small" type="danger" @click="deleteArticle(row)">{{ $t('common.delete') }}</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="table-wrapper">
+      <el-table :data="articles" stripe>
+        <el-table-column prop="title" :label="$t('common.title')" min-width="220" />
+        <el-table-column prop="status" :label="$t('common.status')" width="120" />
+        <el-table-column prop="visibility" :label="$t('myArticle.visibility')" width="140" />
+        <el-table-column prop="createdAt" :label="$t('common.created')" width="160" />
+        <el-table-column :label="$t('common.actions')" width="180">
+          <template #default="{ row }">
+            <el-button size="small" @click="editArticle(row)">{{ $t('common.edit') }}</el-button>
+            <el-button size="small" type="danger" @click="deleteArticle(row)">{{ $t('common.delete') }}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </section>
 </template>
 
@@ -67,5 +69,28 @@ onMounted(loadArticles)
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .list-hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .actions {
+    text-align: right;
+  }
+}
+
+@media (max-width: 480px) {
+  .list-hero {
+    padding: 18px;
+  }
 }
 </style>

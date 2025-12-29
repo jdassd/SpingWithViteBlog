@@ -105,4 +105,34 @@ onMounted(loadAlbum)
   width: 100%;
   border-radius: 12px;
 }
+
+@media (max-width: 640px) {
+  .album-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  .photo-card img {
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .album-card {
+    padding: 16px;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .photo-card img {
+    height: 120px;
+  }
+}
 </style>

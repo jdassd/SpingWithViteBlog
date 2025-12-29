@@ -205,4 +205,34 @@ onMounted(loadArticle)
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .editor-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .editor-actions {
+    justify-content: flex-end;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-card {
+    padding: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview {
+    min-height: 300px;
+  }
+}
 </style>

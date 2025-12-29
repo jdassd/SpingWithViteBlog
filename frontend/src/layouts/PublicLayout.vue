@@ -350,4 +350,47 @@ onBeforeUnmount(() => {
     justify-content: space-between;
   }
 }
+
+@media (max-width: 640px) {
+  .header-inner {
+    gap: 8px;
+    min-height: 60px;
+  }
+  .brand-subtitle {
+    display: none;
+  }
+  .nav-links {
+    gap: 6px;
+    font-size: 14px;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .nav-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  .lang-chip {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  .user-chip {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-title {
+    font-size: 16px;
+  }
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+  }
+  .nav-link {
+    padding: 4px 2px;
+    font-size: 13px;
+  }
+}
 </style>

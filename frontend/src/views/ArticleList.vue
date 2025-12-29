@@ -111,4 +111,32 @@ onMounted(async () => {
   justify-content: center;
   margin-top: 20px;
 }
+
+@media (max-width: 768px) {
+  .list-hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  .filters .el-input,
+  .filters .el-select,
+  .filters .el-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .list-hero {
+    padding: 18px;
+  }
+
+  .article-grid {
+    gap: 12px;
+  }
+}
 </style>

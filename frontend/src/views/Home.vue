@@ -308,4 +308,55 @@ onMounted(async () => {
     justify-self: stretch;
   }
 }
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .blog-hero {
+    padding: 24px;
+    gap: 14px;
+  }
+
+  .portal-hero {
+    padding: 24px;
+  }
+
+  .portal-title {
+    font-size: 26px;
+  }
+
+  .portal-search {
+    flex-direction: column;
+  }
+
+  .portal-search .el-input,
+  .portal-search .el-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 26px;
+  }
+
+  .blog-hero,
+  .portal-hero {
+    padding: 18px;
+  }
+
+  .portal-title {
+    font-size: 22px;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-links {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

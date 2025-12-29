@@ -73,4 +73,30 @@ onMounted(runSearch)
   display: grid;
   gap: 16px;
 }
+
+@media (max-width: 768px) {
+  .search-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    flex-direction: column;
+  }
+
+  .search-box .el-input,
+  .search-box .el-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-hero {
+    padding: 18px;
+  }
+
+  .results {
+    gap: 12px;
+  }
+}
 </style>

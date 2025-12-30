@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class SpaForwardingController {
-  @RequestMapping({"/{path:[^\\.]*}", "/**/{path:[^\\.]*}"})
+  @RequestMapping({"/{path:[^\\.]*}", "/{path:[^\\.]*}/**"})
   public String forward(HttpServletRequest request) {
     String path = request.getRequestURI();
     if (path.startsWith("/api")

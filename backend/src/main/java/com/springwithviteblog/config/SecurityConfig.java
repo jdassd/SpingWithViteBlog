@@ -51,7 +51,7 @@ public class SecurityConfig {
             .requestMatchers("/rss/**").permitAll()
             .requestMatchers("/custom.css", "/custom.js").permitAll()
             .requestMatchers("/themes/**", "/uploads/**").permitAll()
-            .requestMatchers("/", "/index.html", "/assets/**", "/favicon.ico").permitAll()
+            .requestMatchers("/", "/index.html", "/assets/**", "/favicon.ico", "/vite.svg").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .anyRequest().authenticated()

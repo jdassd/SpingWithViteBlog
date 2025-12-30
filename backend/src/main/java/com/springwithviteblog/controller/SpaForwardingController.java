@@ -13,6 +13,7 @@ public class SpaForwardingController {
     String path = request.getRequestURI();
     if (path.startsWith("/api")
         || path.startsWith("/rss")
+        || path.startsWith("/assets")
         || path.startsWith("/uploads")
         || path.startsWith("/themes")
         || path.startsWith("/h2-console")) {

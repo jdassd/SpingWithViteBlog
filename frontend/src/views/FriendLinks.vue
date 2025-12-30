@@ -45,10 +45,8 @@ const linksByCategory = ref<Record<string, FriendLink[]>>({})
 const loadLinks = async () => {
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: Record<string, FriendLink[]> }>('/api/friend-links')
-    if (res.success) {
-      linksByCategory.value = res.data || {}
-    }
+    const res = await api.get<Record<string, FriendLink[]>>('/api/friend-links')
+    linksByCategory.value = res || {}
   } catch (err) {
     console.error('Failed to load friend links:', err)
   } finally {

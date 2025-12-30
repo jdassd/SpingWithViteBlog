@@ -75,11 +75,9 @@ const loadSeriesDetail = async () => {
   loading.value = true
   try {
     const id = route.params.id
-    const res = await api.get<{ success: boolean; data: Series & { articles: ArticleInSeries[] } }>(`/api/series/${id}`)
-    if (res.success && res.data) {
-      series.value = res.data
-      articles.value = res.data.articles || []
-    }
+    const res = await api.get<Series & { articles: ArticleInSeries[] }>(`/api/series/${id}`)
+    series.value = res
+    articles.value = res.articles || []
   } catch (err) {
     console.error('Failed to load series:', err)
   } finally {

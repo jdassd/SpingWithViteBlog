@@ -111,10 +111,8 @@ const formatDate = (dateStr: string) => {
 const loadFavorites = async () => {
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: Favorite[] }>('/api/favorites')
-    if (res.success) {
-      favorites.value = res.data || []
-    }
+    const res = await api.get<Favorite[]>('/api/favorites')
+    favorites.value = res || []
   } catch (err) {
     console.error('Failed to load favorites:', err)
   } finally {
@@ -127,10 +125,8 @@ const viewFavorite = async (fav: Favorite) => {
   showArticlesDrawer.value = true
   articlesLoading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: FavoriteArticleItem[] }>(`/api/favorites/${fav.id}/articles`)
-    if (res.success) {
-      favoriteArticles.value = res.data || []
-    }
+    const res = await api.get<FavoriteArticleItem[]>(`/api/favorites/${fav.id}/articles`)
+    favoriteArticles.value = res || []
   } catch (err) {
     console.error('Failed to load articles:', err)
   } finally {

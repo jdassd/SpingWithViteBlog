@@ -59,10 +59,8 @@ const seriesList = ref<Series[]>([])
 const loadSeries = async () => {
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: Series[] }>('/api/admin/series')
-    if (res.success) {
-      seriesList.value = res.data || []
-    }
+    const res = await api.get<Series[]>('/api/admin/series')
+    seriesList.value = res || []
   } catch (err) {
     console.error('Failed to load series:', err)
   } finally {

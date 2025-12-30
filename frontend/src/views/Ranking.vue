@@ -44,10 +44,8 @@ const items = ref<RankingItem[]>([])
 const loadRanking = async () => {
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: RankingItem[] }>('/api/ranking?limit=20')
-    if (res.success) {
-      items.value = res.data || []
-    }
+    const res = await api.get<RankingItem[]>('/api/ranking?limit=20')
+    items.value = res || []
   } catch (err) {
     console.error('Failed to load ranking:', err)
   } finally {

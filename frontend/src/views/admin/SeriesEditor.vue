@@ -92,15 +92,13 @@ const loadSeries = async () => {
   if (!isEdit.value) return
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: any }>(`/api/admin/series/${route.params.id}`)
-    if (res.success && res.data) {
-      form.title = res.data.title
-      form.description = res.data.description || ''
-      form.coverUrl = res.data.coverUrl || ''
-      form.status = res.data.status
-      form.visibility = res.data.visibility
-      form.sortOrder = res.data.sortOrder || 0
-    }
+    const res = await api.get<any>(`/api/admin/series/${route.params.id}`)
+    form.title = res.title
+    form.description = res.description || ''
+    form.coverUrl = res.coverUrl || ''
+    form.status = res.status
+    form.visibility = res.visibility
+    form.sortOrder = res.sortOrder || 0
   } catch (err) {
     console.error('Failed to load series:', err)
   } finally {
@@ -112,10 +110,8 @@ const loadArticles = async () => {
   if (!isEdit.value) return
   articlesLoading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: any[] }>(`/api/admin/series/${route.params.id}/articles`)
-    if (res.success) {
-      articles.value = res.data || []
-    }
+    const res = await api.get<any[]>(`/api/admin/series/${route.params.id}/articles`)
+    articles.value = res || []
   } catch (err) {
     console.error('Failed to load articles:', err)
   } finally {

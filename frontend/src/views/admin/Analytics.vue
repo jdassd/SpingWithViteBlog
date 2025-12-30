@@ -110,10 +110,8 @@ const rankingConfig = reactive<RankingConfig>({
 const loadOverview = async () => {
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: Analytics }>('/api/admin/analytics/overview')
-    if (res.success && res.data) {
-      Object.assign(overview, res.data)
-    }
+    const res = await api.get<Analytics>('/api/admin/analytics/overview')
+    Object.assign(overview, res)
   } catch (err) {
     console.error('Failed to load overview:', err)
   } finally {
@@ -124,10 +122,10 @@ const loadOverview = async () => {
 const loadTopArticles = async () => {
   topLoading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: any[] }>(`/api/admin/analytics/top-articles?days=${topDays.value}&limit=10`)
-    if (res.success) {
-      topArticles.value = res.data || []
-    }
+    const res = await api.get<{ article_id: number; count: number }[]>(
+      `/api/admin/analytics/top-articles?days=${topDays.value}&limit=10`
+    )
+    topArticles.value = res || []
   } catch (err) {
     console.error('Failed to load top articles:', err)
   } finally {
@@ -137,10 +135,8 @@ const loadTopArticles = async () => {
 
 const loadRankingConfig = async () => {
   try {
-    const res = await api.get<{ success: boolean; data: RankingConfig }>('/api/admin/analytics/ranking-config')
-    if (res.success && res.data) {
-      Object.assign(rankingConfig, res.data)
-    }
+    const res = await api.get<RankingConfig>('/api/admin/analytics/ranking-config')
+    Object.assign(rankingConfig, res)
   } catch (err) {
     console.error('Failed to load ranking config:', err)
   }

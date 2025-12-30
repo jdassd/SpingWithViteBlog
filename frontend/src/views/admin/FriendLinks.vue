@@ -120,10 +120,8 @@ const statusType = (status: string) => {
 const loadLinks = async () => {
   loading.value = true
   try {
-    const res = await api.get<{ success: boolean; data: FriendLink[] }>('/api/admin/friend-links')
-    if (res.success) {
-      links.value = res.data || []
-    }
+    const res = await api.get<FriendLink[]>('/api/admin/friend-links')
+    links.value = res || []
   } catch (err) {
     console.error('Failed to load links:', err)
   } finally {
@@ -195,9 +193,9 @@ const toggleEnabled = async (link: FriendLink) => {
 
 const checkLink = async (link: FriendLink) => {
   try {
-    const res = await api.post<{ success: boolean; data: { status: string } }>(`/api/admin/friend-links/${link.id}/check`)
-    if (res.success) {
-      ElMessage.success(`检测结果: ${res.data.status}`)
+    const res = await api.post<{ status: string }>(`/api/admin/friend-links/${link.id}/check`)
+    if (res) {
+      ElMessage.success(`检测结果: ${res.status}`)
       loadLinks()
     }
   } catch (err) {
